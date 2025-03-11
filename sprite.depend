@@ -428,12 +428,17 @@
 
 1711035787 d:\learncode\08_sprite\defs.h
 
-1741371216 source:d:\thelordofslime\main.cpp
-	<iostream>
+1741706171 source:d:\thelordofslime\main.cpp
 	<SDL.h>
-	<SDL_image.h>
-	"graphics.h"
-	"defs.h"
+	<iostream>
+	<vector>
+	<cstdlib>
+	<ctime>
+	"Game.h"
+	"Slime.h"
+	"Enemy.h"
+	"Boss.h"
+	"Bullet.h"
 
 1711035787 d:\thelordofslime\graphics.h
 	<SDL.h>
@@ -441,7 +446,7 @@
 	"defs.h"
 	<vector>
 
-1741371208 d:\thelordofslime\defs.h
+1741404373 d:\thelordofslime\defs.h
 
 1739157301 d:\sdl2-devel-2.28.5-mingw (1)\sdl2-2.28.5\x86_64-w64-mingw32\include\sdl2\sdl.h
 	"SDL_main.h"
@@ -841,4 +846,46 @@
 	"SDL_version.h"
 	"begin_code.h"
 	"close_code.h"
+
+1741705554 d:\thelordofslime\game.h
+	<SDL.h>
+	<iostream>
+	<vector>
+	<cstdlib>
+	<ctime>
+
+1741706051 d:\thelordofslime\slime.h
+	<SDL.h>
+	<iostream>
+	<vector>
+	<cstdlib>
+	<ctime>
+	"Game.h"
+	"Slime.h"
+
+1741706098 d:\thelordofslime\enemy.h
+	<SDL.h>
+	<iostream>
+	<vector>
+	<cstdlib>
+	<ctime>
+	"Game.h"
+
+1741706066 d:\thelordofslime\boss.h
+	<SDL.h>
+	<iostream>
+	<vector>
+	<cstdlib>
+	<ctime>
+	"Game.h"
+
+1741706171 d:\thelordofslime\bullet.h
+	<SDL.h>
+	<iostream>
+	<vector>
+	<cstdlib>
+	<ctime>
+	"Game.h"
+	"Slime.h"
+	"Boss.h"
 

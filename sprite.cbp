@@ -31,13 +31,17 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add directory="D:/DATA/uet/kmht/giangday/LTNC/SDL2_download/SDL2-2.30.0/x86_64-w64-mingw32/include/SDL2" />
-			<Add directory="D:/DATA/uet/kmht/giangday/LTNC/SDL2_download/SDL2_image-2.8.2/x86_64-w64-mingw32/include/SDL2" />
+			<Add directory="D:/SDL2-devel-2.28.5-mingw (1)/SDL2-2.28.5/x86_64-w64-mingw32/include/SDL2" />
+			<Add directory="D:/SDL2_image-devel-2.8.5-mingw/SDL2_image-2.8.5/x86_64-w64-mingw32/include/SDL2" />
+			<Add directory="D:/SDL2_mixer-devel-2.8.1-mingw/SDL2_mixer-2.8.1/x86_64-w64-mingw32/include/SDL2" />
+			<Add directory="D:/SDL2_ttf-devel-2.24.0-mingw/SDL2_ttf-2.24.0/x86_64-w64-mingw32/include/SDL2" />
 		</Compiler>
 		<Linker>
-			<Add option="-lmingw32 -lSDL2main -lSDL2 -lSDL2_image" />
-			<Add directory="D:/DATA/uet/kmht/giangday/LTNC/SDL2_download/SDL2_image-2.8.2/x86_64-w64-mingw32/lib" />
-			<Add directory="D:/DATA/uet/kmht/giangday/LTNC/SDL2_download/SDL2-2.30.0/x86_64-w64-mingw32/lib" />
+			<Add option="-lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf" />
+			<Add directory="D:/SDL2-devel-2.28.5-mingw (1)/SDL2-2.28.5/x86_64-w64-mingw32/lib" />
+			<Add directory="D:/SDL2_image-devel-2.8.5-mingw/SDL2_image-2.8.5/x86_64-w64-mingw32/lib" />
+			<Add directory="D:/SDL2_mixer-devel-2.8.1-mingw/SDL2_mixer-2.8.1/x86_64-w64-mingw32/lib" />
+			<Add directory="D:/SDL2_ttf-devel-2.24.0-mingw/SDL2_ttf-2.24.0/x86_64-w64-mingw32/lib" />
 		</Linker>
 		<Unit filename="defs.h" />
 		<Unit filename="graphics.h" />
