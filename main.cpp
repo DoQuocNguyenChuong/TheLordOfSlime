@@ -37,12 +37,11 @@ int main(int argc, char* argv[]) {
     bool di_trai=false;
     bool di_phai=false;
 
-//    int numObstacle = rand() % 20+ 10;
-//    for(int i=0;i<numObstacle;i++){
-//        // Thêm một enemy mới vào danh sách enemies
-//        obstacles.push_back(Obstacle(400+i*300,400));
-//    }
-
+    int numObstacle = rand()%20+10;
+    for(int i=0;i<numObstacle;i++){
+        // Thêm một enemy mới vào danh sách enemies
+        obstacles.push_back(Obstacle(400+i*400,400));
+    }
 
     int numEnemies = rand() % 20+ 10;
     for(int i=0;i<numEnemies;i++){
@@ -107,17 +106,31 @@ int main(int argc, char* argv[]) {
         // Di chuyển Dino
         slime.move();
 
-        // Di chuyển chướng ngại vật
-        for (auto& obstacle : obstacles) {
-            obstacle.move();
-        }
+        // Di chuyển chướng ngại vật va xoa cac chuong ngai vat khi ra khoi man hinh
+        for (auto it = obstacles.begin(); it != obstacles.end(); ) {
+          it->move();
+          if (it->outofscreen()) {
+               it = obstacles.erase(it);  // Erase and move to the next bullet
+               if(it==obstacles.end()){
+                break;
+               }
+          } else {
+               ++it;  // Move to the next bullet if not erased
+            }
+          }
 
-        // Di chuyển các đạn
-        for (auto& bullet : bullets) {
-            bullet.move();
-
-        }
-
+        // Di chuyển các đạn va xoa cac dan khi di chuyen ra khoi man hinh
+        for (auto it = bullets.begin(); it != bullets.end(); ) {
+          it->move();
+          if (it->outofscreen()) {
+               it = bullets.erase(it);  // Erase and move to the next bullet
+               if(it==bullets.end()){
+                break;
+               }
+          } else {
+               ++it;  // Move to the next bullet if not erased
+            }
+          }
         // Di chuyển các kẻ địch nhỏ
         if (!battleWithBoss) {
             for (auto& enemy : enemies) {
@@ -135,9 +148,18 @@ int main(int argc, char* argv[]) {
             if (rand() % 100 < 3) {  // Tỉ lệ xuất hiện đạn của boss
                 bossBullets.push_back(BossBullet(bosses[0].x, bosses[0].y + 30));
             }
-            for (auto& bullet : bossBullets) {
-                bullet.move();
-            }
+            for (auto it = bossBullets.begin(); it != bossBullets.end(); ) {
+               it->move();  // Move the bullet
+
+            if (it->outofscreen()) {
+                 it = bossBullets.erase(it);  // xoa dan va khoi tao dan moi
+                 if(it==bossBullets.end()){
+                    break;
+                 }
+           } else {
+                 ++it;  // Move to the next bullet if it's not erased
+              }
+              }
         }
 
         // Kiểm tra va chạm giữa đạn và kẻ địch nhỏ
@@ -146,6 +168,9 @@ int main(int argc, char* argv[]) {
           for (auto enemyIt = enemies.begin(); enemyIt != enemies.end();) {
         if (it->checkCollisionWith(*enemyIt) ){
             enemyIt = enemies.erase(enemyIt);  // Xóa kẻ địch khi bị trúng đạn
+            if(it==bullets.end()){
+               break;
+            }
             bulletDestroyed = true;
             enemykilled++;  // Tăng số lượng kẻ địch bị tiêu diệt
             break;
@@ -155,13 +180,19 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    if( it->outofscreen()){
-            it = bullets.erase(it);
-            bulletDestroyed=true;
-        }
+//    if( it->outofscreen()){
+//            it = bullets.erase(it);
+//            if(it==bullets.end()){
+//            break;
+//            }
+//            bulletDestroyed=true;
+//        }
 
     if (bulletDestroyed) {
         it = bullets.erase(it);  // Xóa đạn sau khi va chạm
+        if(it==bullets.end()){
+            break;
+            }
     } else {
         ++it;
     }
@@ -179,14 +210,20 @@ int main(int argc, char* argv[]) {
             ++obstacleIt;
         }
     }
-
-    if( it->outofscreen()){
-            it = bullets.erase(it);
-            bulletDestroyed=true;
-        }
+//
+//    if( it->outofscreen()){
+//            it = bullets.erase(it);
+//            if(it==bullets.end()){
+//            break;
+//            }
+//            bulletDestroyed=true;
+//        }
 
     if (bulletDestroyed) {
-        it = bullets.erase(it);  // Xóa đạn sau khi va chạm
+        it = bullets.erase(it);// Xóa đạn sau khi va chạm
+        if(it==bullets.end()){
+            break;
+        }
     } else {
         ++it;
     }
@@ -211,11 +248,17 @@ int main(int argc, char* argv[]) {
 
             if( it->outofscreen()){
             it = bullets.erase(it);
+            if(it==bullets.end()){
+                break;
+            }
             bulletDestroyed=true;
             }
 
             if (bulletDestroyed) {
                 it = bullets.erase(it);  // Xóa đạn sau khi va chạm
+                if(it==bullets.end()){
+                break;
+            }
             } else {
                 ++it;
             }
@@ -225,7 +268,10 @@ int main(int argc, char* argv[]) {
         for (auto it = bossBullets.begin(); it != bossBullets.end();) {
             if (it->checkCollisionWith(slime)) {
                 slime.health -= 1;  // Dino mất 1 máu khi trúng đạn của boss
-                it = bossBullets.erase(it);  // Xóa đạn của boss sau khi va chạm
+                it = bossBullets.erase(it);// Xóa đạn của boss sau khi va chạm
+                if(it==bossBullets.end()){
+                    break;
+                }
             } else {
                 ++it;
             }
@@ -236,21 +282,30 @@ int main(int argc, char* argv[]) {
             if (it->checkCollisionWith(slime)) {
                 slime.health -= 1;  // Dino mất 1 máu khi chạm vào chướng ngại vật
                 it = obstacles.erase(it);  // Xóa chướng ngại vật khi chạm vào Dino
+                if(it==obstacles.end()){
+                    break;
+                }
             }
             else {
                 ++it;
             }
 
-            if(it->outofscreen()){
-                it = obstacles.erase(it);
-            }
-        }
+//            if(it->outofscreen()){
+//                it = obstacles.erase(it);
+//                if(it==obstacles.end()){
+//                    break;
+//                }
+//            }
+       }
 
         // Kiểm tra va chạm giữa kẻ địch và Dino
         for (auto it = enemies.begin(); it != enemies.end();) {
             if (it->checkCollisionWith(slime)) {
                 slime.health -= 1;  // Dino mất 1 máu khi chạm vào kẻ địch
                 it = enemies.erase(it);  // Xóa kẻ địch khi chạm vào slime
+                if(it==enemies.end()){
+                    break;
+                }
             } else {
                 ++it;
             }

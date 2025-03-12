@@ -15,7 +15,7 @@ struct BossBullet {
     int x, y, w, h;
     int speed;
 
-    BossBullet(int startX, int startY) : x(startX), y(startY), w(10), h(5), speed(-5) {}
+    BossBullet(int startX, int startY) : x(startX), y(startY), w(10), h(5), speed(-10) {}
 
     void move() {
         x += speed;  // Đạn của boss di chuyển về phía Dino

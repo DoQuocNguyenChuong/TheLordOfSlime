@@ -908,3 +908,71 @@
 	"begin_code.h"
 	"close_code.h"
 
+1741787730 source:c:\users\nguyen chuong\thelordofslime\main.cpp
+	<SDL.h>
+	<iostream>
+	<vector>
+	<SDL_ttf.h>
+	<cstdlib>
+	<ctime>
+	"Game.h"
+	"Slime.h"
+	"Enemy.h"
+	"Boss.h"
+	"Bullet.h"
+	"Obstacle.h"
+
+1741768800 c:\users\nguyen chuong\thelordofslime\game.h
+	<SDL.h>
+	<iostream>
+	<vector>
+	<cstdlib>
+	<ctime>
+	<SDL_ttf.h>
+
+1741787804 c:\users\nguyen chuong\thelordofslime\slime.h
+	<SDL.h>
+	<iostream>
+	<vector>
+	<cstdlib>
+	<ctime>
+	"Game.h"
+	"Slime.h"
+
+1741776003 c:\users\nguyen chuong\thelordofslime\enemy.h
+	<SDL.h>
+	<iostream>
+	<vector>
+	<cstdlib>
+	<ctime>
+	"Game.h"
+
+1741767381 c:\users\nguyen chuong\thelordofslime\boss.h
+	<SDL.h>
+	<iostream>
+	<vector>
+	<cstdlib>
+	<ctime>
+	<SDL_ttf.h>
+	"Game.h"
+
+1741787855 c:\users\nguyen chuong\thelordofslime\bullet.h
+	<SDL.h>
+	<iostream>
+	<vector>
+	<cstdlib>
+	<SDL_ttf.h>
+	<ctime>
+	"Game.h"
+	"Slime.h"
+	"Boss.h"
+	"Obstacle.h"
+
+1741776003 c:\users\nguyen chuong\thelordofslime\obstacle.h
+	<SDL.h>
+	<iostream>
+	<vector>
+	<cstdlib>
+	<ctime>
+	"Game.h"
+

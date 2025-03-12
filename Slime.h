@@ -17,7 +17,7 @@ struct slime{
     bool isJumping,turnright,turnleft;
     int health;  // Thanh máu
 
-    slime() : x(100), y(400), w(50), h(50), velY(0), isJumping(false), health(10) {}
+    slime() : x(100), y(400), w(50), h(50), velY(0), isJumping(false), health(1000) {}
 
     void move() {
     // Di chuyển theo trục Y (nhảy)
