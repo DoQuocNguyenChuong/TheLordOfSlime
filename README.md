@@ -1,7 +1,8 @@
 # TheLordOfSlime
 - Đây là bài tập lớn chiếm 20% tổng điểm của học phần lập trình nâng cao của Trường đại học Công Nghệ,ĐHQGHN
-- Sử dụng thư viện SDL2 và CodeBlock
+- Sử dụng thư viện SDL2, CodeBlock và C++
 - Sinh viên thực hiện:
 + Tên: Đỗ Quốc Nguyên Chương
 + Mã sinh viên: 24020050
+- Ngày 11/03/2025: version 0.1
 
