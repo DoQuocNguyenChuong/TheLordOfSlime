@@ -5,8 +5,8 @@
 #include <vector>
 #include<cstdlib>
 #include<ctime>
+#include <SDL_ttf.h>
 #include "Game.h"
-
 
 struct Boss {
     int x, y, w, h;

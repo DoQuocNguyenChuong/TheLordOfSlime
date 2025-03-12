@@ -8,13 +8,12 @@
 #include "Game.h"
 
 
-
 struct Enemy {
     int x, y, w, h;
     int health;
     int speed;
 
-    Enemy(int startX, int startY) : x(startX), y(startY), w(50), h(50), health(1), speed(2) {}
+    Enemy(int startX, int startY) : x(startX), y(startY), w(50), h(50), health(1), speed(3) {}
 
     void move(const slime& slime){
         // Kẻ địch bay (di chuyển theo trục Y)
@@ -23,7 +22,11 @@ struct Enemy {
 
         if (y < slime.y) y += speed;
         else if (y > slime.y) y -= speed;
-    }
+//        x -= speed;
+//        if (x < -w) {
+//            x = windowWidth;
+//        }
+   }
 
     void draw() {
         SDL_Rect enemyRect = { x, y, w, h };

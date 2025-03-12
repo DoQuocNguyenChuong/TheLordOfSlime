@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <iostream>
 #include <vector>
+#include <SDL_ttf.h>
 #include<cstdlib>
 #include<ctime>
 #include "Game.h"
@@ -11,9 +12,8 @@
 #include "Obstacle.h"
 
 
-
 int main(int argc, char* argv[]) {
-    //srand(time(0));
+    srand(static_cast<unsigned int>(time(0)));
     if (!init()) {
         std::cerr << "Failed to initialize SDL!" << std::endl;
         return -1;
@@ -22,25 +22,34 @@ int main(int argc, char* argv[]) {
     bool quit = false;
     SDL_Event e;
 
-    slime slime;
     std::vector<Obstacle> obstacles;
     std::vector<Bullet> bullets;  // Danh sách các đạn
     std::vector<Enemy> enemies;   // Danh sách các kẻ địch nhỏ
     std::vector<Boss> bosses;     // Danh sách các boss
     std::vector<BossBullet> bossBullets;  // Đạn của boss
 
-    obstacles.push_back(Obstacle(windowWidth));
+    slime slime;
 
-    // Thêm kẻ địch nhỏ vào game
-    for (int i = 0; i < 20; i++) {
-        enemies.push_back(Enemy(600 + i * 100, 100 + i * 30));
-    }
 
-    int enemyCount = 0;  // Đếm số lượng kẻ địch bị tiêu diệt
+    int enemykilled = 0;  // Đếm số lượng kẻ địch bị tiêu diệt
     bool battleWithBoss = false;
     bool nha_dan=false;
     bool di_trai=false;
     bool di_phai=false;
+
+//    int numObstacle = rand() % 20+ 10;
+//    for(int i=0;i<numObstacle;i++){
+//        // Thêm một enemy mới vào danh sách enemies
+//        obstacles.push_back(Obstacle(400+i*300,400));
+//    }
+
+
+    int numEnemies = rand() % 20+ 10;
+    for(int i=0;i<numEnemies;i++){
+        // Thêm một enemy mới vào danh sách enemies
+        enemies.push_back(Enemy(600+i*300,200+i*30));
+    }
+
 
     // Vòng lặp game chính
     while (!quit) {
@@ -71,26 +80,28 @@ int main(int argc, char* argv[]) {
 
                 if (e.key.keysym.sym == SDLK_w){
                     if(!nha_dan){
-                    bullets.push_back(Bullet(slime.x + slime.w, slime.y + slime.h / 2 - 2));  // Vị trí bắn từ giữa nhân vật
+                    int x1=slime.x + slime.w;
+                    int y1= slime.y + slime.h / 2 - 2;
+                    bullets.push_back(Bullet(x1, y1));  // Vị trí bắn từ giữa nhân vật
                     nha_dan=true;
                     }
                  }
             }
 
             if (e.type == SDL_KEYUP) {
-    if (e.key.keysym.sym == SDLK_LEFT) {
-        di_trai = false;
-        slime.stopLeft();  // Dừng di chuyển sang trái khi nhả phím
-    }
-    if (e.key.keysym.sym == SDLK_RIGHT) {
-        di_phai = false;
-        slime.stopRight();  // Dừng di chuyển sang phải khi nhả phím
-    }
+                 if (e.key.keysym.sym == SDLK_LEFT) {
+                     di_trai = false;
+                     slime.stopLeft();  // Dừng di chuyển sang trái khi nhả phím
+                  }
+             if (e.key.keysym.sym == SDLK_RIGHT) {
+                    di_phai = false;
+                    slime.stopRight();  // Dừng di chuyển sang phải khi nhả phím
+                  }
 
-    if (e.key.keysym.sym == SDLK_w) {
-        nha_dan = false;
-    }
-}
+             if (e.key.keysym.sym == SDLK_w) {
+                  nha_dan = false;
+                  }
+           }
         }
 
         // Di chuyển Dino
@@ -121,7 +132,7 @@ int main(int argc, char* argv[]) {
 
         // Boss bắn đạn
         if (battleWithBoss) {
-            if (rand() % 100 < 5) {  // Tỉ lệ xuất hiện đạn của boss
+            if (rand() % 100 < 3) {  // Tỉ lệ xuất hiện đạn của boss
                 bossBullets.push_back(BossBullet(bosses[0].x, bosses[0].y + 30));
             }
             for (auto& bullet : bossBullets) {
@@ -131,17 +142,48 @@ int main(int argc, char* argv[]) {
 
         // Kiểm tra va chạm giữa đạn và kẻ địch nhỏ
         for (auto it = bullets.begin(); it != bullets.end();) {
-    bool bulletDestroyed = false;
-    for (auto enemyIt = enemies.begin(); enemyIt != enemies.end();) {
-        if (it->checkCollisionWith(*enemyIt)) {
+          bool bulletDestroyed = false;
+          for (auto enemyIt = enemies.begin(); enemyIt != enemies.end();) {
+        if (it->checkCollisionWith(*enemyIt) ){
             enemyIt = enemies.erase(enemyIt);  // Xóa kẻ địch khi bị trúng đạn
             bulletDestroyed = true;
-            enemyCount++;  // Tăng số lượng kẻ địch bị tiêu diệt
+            enemykilled++;  // Tăng số lượng kẻ địch bị tiêu diệt
             break;
-        } else {
+        }
+        else {
             ++enemyIt;
         }
     }
+
+    if( it->outofscreen()){
+            it = bullets.erase(it);
+            bulletDestroyed=true;
+        }
+
+    if (bulletDestroyed) {
+        it = bullets.erase(it);  // Xóa đạn sau khi va chạm
+    } else {
+        ++it;
+    }
+}
+
+       //kiem tra va cham giua dan va obstacle
+        for (auto it = bullets.begin(); it != bullets.end();) {
+    bool bulletDestroyed = false;
+    for (auto obstacleIt = obstacles.begin(); obstacleIt != obstacles.end();) {
+        if (it->checkCollisionWith(*obstacleIt) ){
+            bulletDestroyed = true;
+            break;
+        }
+        else {
+            ++obstacleIt;
+        }
+    }
+
+    if( it->outofscreen()){
+            it = bullets.erase(it);
+            bulletDestroyed=true;
+        }
 
     if (bulletDestroyed) {
         it = bullets.erase(it);  // Xóa đạn sau khi va chạm
@@ -155,14 +197,21 @@ int main(int argc, char* argv[]) {
             bool bulletDestroyed = false;
             for (auto& boss : bosses) {
                 if (it->checkCollisionWith(boss)) {
-                    boss.health -= 1;  // Boss mất 10 máu mỗi lần bị trúng đạn
+                    boss.health -= 10;  // Boss mất 10 máu mỗi lần bị trúng đạn
                     bulletDestroyed = true;
                     if (boss.health <= 0) {
-                        std::cout << "Boss defeated!" << std::endl;
+                        renderText("You Win! Boss defeated!", 300, 200);
+                        SDL_RenderPresent(renderer);
+                        SDL_Delay(2000);  // Hiển thị Game Over trong 2 giây
                         quit = true;  // Kết thúc game khi boss chết
                     }
                     break;
                 }
+            }
+
+            if( it->outofscreen()){
+            it = bullets.erase(it);
+            bulletDestroyed=true;
             }
 
             if (bulletDestroyed) {
@@ -172,7 +221,7 @@ int main(int argc, char* argv[]) {
             }
         }
 
-        // Kiểm tra va chạm giữa đạn của boss và Dino
+        // Kiểm tra va chạm giữa đạn của boss và slime
         for (auto it = bossBullets.begin(); it != bossBullets.end();) {
             if (it->checkCollisionWith(slime)) {
                 slime.health -= 1;  // Dino mất 1 máu khi trúng đạn của boss
@@ -187,8 +236,13 @@ int main(int argc, char* argv[]) {
             if (it->checkCollisionWith(slime)) {
                 slime.health -= 1;  // Dino mất 1 máu khi chạm vào chướng ngại vật
                 it = obstacles.erase(it);  // Xóa chướng ngại vật khi chạm vào Dino
-            } else {
+            }
+            else {
                 ++it;
+            }
+
+            if(it->outofscreen()){
+                it = obstacles.erase(it);
             }
         }
 
@@ -196,7 +250,7 @@ int main(int argc, char* argv[]) {
         for (auto it = enemies.begin(); it != enemies.end();) {
             if (it->checkCollisionWith(slime)) {
                 slime.health -= 1;  // Dino mất 1 máu khi chạm vào kẻ địch
-                it = enemies.erase(it);  // Xóa kẻ địch khi chạm vào Dino
+                it = enemies.erase(it);  // Xóa kẻ địch khi chạm vào slime
             } else {
                 ++it;
             }
@@ -204,17 +258,20 @@ int main(int argc, char* argv[]) {
 
 
         // Kiểm tra xem số lượng kẻ địch nhỏ đã đạt 10 chưa
-        if (enemyCount >= 10 && bosses.empty()) {
+        if (enemykilled >= 10 && bosses.empty()) {
             bosses.push_back(Boss());  // Tạo boss khi đủ 10 kẻ địch nhỏ bị tiêu diệt
             enemies.clear();  // Xóa hết kẻ địch nhỏ
             battleWithBoss = true;  // Dừng màn hình cho trận chiến với boss
         }
 
         // Dừng game khi slime hết máu
-        if (slime.health <= 0) {
-            std::cout << "Game Over! slime died!" << std::endl;
-            quit = true;
-        }
+            if (slime.health <= 0) {
+               renderText("Game Over! You died!", 300, 200);
+               std::cout << "Game Over! slime died!" << std::endl;
+               SDL_RenderPresent(renderer);
+               SDL_Delay(2000);  // Hiển thị Game Over trong 2 giây
+               quit = true;
+            }
 
         // Vẽ lại màn hình
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);  // Màu nền trắng
@@ -223,6 +280,7 @@ int main(int argc, char* argv[]) {
         // Vẽ slime, đạn, chướng ngại vật, kẻ địch nhỏ và boss
         slime.draw();
         slime.drawHealthBar();  // Vẽ thanh máu
+         // Tạo chướng ngại vật ngẫu nhiên
         for (auto& obstacle : obstacles) {
             obstacle.draw();
         }
@@ -239,6 +297,10 @@ int main(int argc, char* argv[]) {
         for (auto& bossBullet : bossBullets) {
             bossBullet.draw();
         }
+
+        // Render số lượng kẻ địch bị giết
+        renderText("Enemies Killed: " + std::to_string(enemykilled), 400, 20);
+
 
         // Cập nhật màn hình
         SDL_RenderPresent(renderer);

@@ -12,7 +12,7 @@ struct Obstacle {
     int x, y, w, h;
     int speed;
 
-    Obstacle(int startX) : x(startX), y(400), w(50), h(50), speed(5) {}
+    Obstacle(int startX,int startY) : x(startX), y(startY), w(50), h(50), speed(5) {}
 
     void move() {
         x -= speed;
@@ -29,6 +29,9 @@ struct Obstacle {
 
     bool checkCollisionWith(const slime& slime) {
         return !(x + w <= slime.x || x >= slime.x + slime.w || y + h <= slime.y || y >= slime.y + slime.h);
+    }
+    bool outofscreen(){
+         return !(x>=0);
     }
 };
 

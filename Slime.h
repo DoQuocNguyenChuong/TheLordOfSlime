@@ -33,7 +33,7 @@ struct slime{
         }
     }
 
-    // Di chuyển sang phải
+     //Di chuyển sang phải
     if (turnright) {
         x += 5;  // Di chuyển sang phải với tốc độ cố định
         if (x >= 600) {
