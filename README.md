@@ -8,3 +8,5 @@
 - Ngày 12/03/2025: version 0.2
   + Phiên bản này đã có cải tiến thêm file ttf để hiện lên màn hình phần game over
   + Thêm các logic game như: xóa đạn khi ra khỏi màn hình, xóa obstacle khi ra khỏi màn hình, đạn bị cản bởi obstacle
+- Ngày 12/03/2025: version 0.3
+  + phiên bản này đã sửa được lỗi đơ lag màn hình khi chạy chương trình và các obstacle ra một cách tương đối hợp lí 
