@@ -908,7 +908,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1741787730 source:c:\users\nguyen chuong\thelordofslime\main.cpp
+1742377760 source:c:\users\nguyen chuong\thelordofslime\main.cpp
 	<SDL.h>
 	<iostream>
 	<vector>
@@ -922,15 +922,16 @@
 	"Bullet.h"
 	"Obstacle.h"
 
-1741768800 c:\users\nguyen chuong\thelordofslime\game.h
+1742368971 c:\users\nguyen chuong\thelordofslime\game.h
 	<SDL.h>
 	<iostream>
 	<vector>
 	<cstdlib>
 	<ctime>
 	<SDL_ttf.h>
+	<SDL_image.h>
 
-1741787804 c:\users\nguyen chuong\thelordofslime\slime.h
+1742378636 c:\users\nguyen chuong\thelordofslime\slime.h
 	<SDL.h>
 	<iostream>
 	<vector>
@@ -939,7 +940,7 @@
 	"Game.h"
 	"Slime.h"
 
-1741776003 c:\users\nguyen chuong\thelordofslime\enemy.h
+1742365674 c:\users\nguyen chuong\thelordofslime\enemy.h
 	<SDL.h>
 	<iostream>
 	<vector>
@@ -947,7 +948,7 @@
 	<ctime>
 	"Game.h"
 
-1741767381 c:\users\nguyen chuong\thelordofslime\boss.h
+1742373472 c:\users\nguyen chuong\thelordofslime\boss.h
 	<SDL.h>
 	<iostream>
 	<vector>
@@ -956,7 +957,7 @@
 	<SDL_ttf.h>
 	"Game.h"
 
-1741787855 c:\users\nguyen chuong\thelordofslime\bullet.h
+1742378046 c:\users\nguyen chuong\thelordofslime\bullet.h
 	<SDL.h>
 	<iostream>
 	<vector>
@@ -968,11 +969,20 @@
 	"Boss.h"
 	"Obstacle.h"
 
-1741776003 c:\users\nguyen chuong\thelordofslime\obstacle.h
+1742365217 c:\users\nguyen chuong\thelordofslime\obstacle.h
 	<SDL.h>
 	<iostream>
 	<vector>
 	<cstdlib>
 	<ctime>
 	"Game.h"
+
+1742184434 c:\users\nguyen chuong\thelordofslime\defs.h
+
+1742184011 c:\users\nguyen chuong\thelordofslime\graphics.h
+	<SDL.h>
+	<SDL_image.h>
+	"defs.h"
+	<vector>
+	<iostream>
 

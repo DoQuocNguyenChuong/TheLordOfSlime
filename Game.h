@@ -6,10 +6,11 @@
 #include<cstdlib>
 #include<ctime>
 #include <SDL_ttf.h>
-
+#include<SDL_image.h>
 
 SDL_Window* window=nullptr;
 SDL_Renderer* renderer=nullptr;
+SDL_Texture* backgroundTexture=nullptr;
 int windowWidth=800;
 int windowHeight=600;
 TTF_Font* font;
@@ -41,12 +42,25 @@ bool init() {
     }
 
     // Mở font
-    font = TTF_OpenFont("lazy.ttf", 24);  // Thay đường dẫn đúng đến file font của bạn
+    font = TTF_OpenFont("lazy.ttf", 50);  // Thay đường dẫn đúng đến file font của bạn
     if (!font) {
         std::cerr << "Font could not be loaded! TTF_Error: " << TTF_GetError() << std::endl;
         return false;
     }
 
+
+    // Khởi tạo SDL_image để hỗ trợ tải ảnh
+    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
+        std::cerr << "SDL_image could not initialize! SDL_image Error: " << IMG_GetError() << std::endl;
+        return false;
+    }
+
+    // Tải hình ảnh nền
+    backgroundTexture = IMG_LoadTexture(renderer, "img\\forest.png");
+    if (backgroundTexture == nullptr) {
+        std::cerr << "Failed to load background image! SDL_image Error: " << IMG_GetError() << std::endl;
+        return false;
+    }
 
     return true;
 }
@@ -54,6 +68,11 @@ bool init() {
 
 // Hàm dọn dẹp SDL
 void close() {
+
+    if (backgroundTexture != nullptr) {
+        SDL_DestroyTexture(backgroundTexture);
+        backgroundTexture = nullptr;
+    }
     TTF_CloseFont(font);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
@@ -88,7 +107,25 @@ void renderText(const std::string& text, int x, int y) {
     // Giải phóng tài nguyên texture
     SDL_DestroyTexture(texture);
 }
+SDL_Texture* loadTexture(const std::string& path, SDL_Renderer* renderer) {
+    SDL_Texture* texture = nullptr;
+    SDL_Surface* surface = IMG_Load(path.c_str());
+    if (surface == nullptr) {
+        std::cerr << "Unable to load image " << path << "! SDL_image Error: " << IMG_GetError() << std::endl;
+    } else {
+        texture = SDL_CreateTextureFromSurface(renderer, surface);
+        if (texture == nullptr) {
+            std::cerr << "Unable to create texture from " << path << "! SDL Error: " << SDL_GetError() << std::endl;
+        }
+        SDL_FreeSurface(surface);
+    }
+    return texture;
+}
 
+void drawTexture(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, int width, int height) {
+    SDL_Rect destRect = {x, y, width, height};
+    SDL_RenderCopy(renderer, texture, nullptr, &destRect);
+}
 
 
 #endif // GAME_H_INCLUDED

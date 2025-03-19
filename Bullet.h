@@ -14,45 +14,68 @@
 struct BossBullet {
     int x, y, w, h;
     int speed;
+    SDL_Texture* texture;  // Texture cho viên đạn
 
-    BossBullet(int startX, int startY) : x(startX), y(startY), w(10), h(5), speed(-10) {}
+    BossBullet(int startX, int startY)
+        : x(startX), y(startY), w(67), h(50), speed(-10) {
+
+        // Tải hình ảnh cho viên đạn
+        texture = IMG_LoadTexture(renderer, "img/bossbullet.png");  // Đường dẫn tới hình ảnh của viên đạn
+        if (!texture) {
+            std::cerr << "Failed to load boss bullet texture! SDL_image Error: " << IMG_GetError() << std::endl;
+        }
+    }
 
     void move() {
         x += speed;  // Đạn của boss di chuyển về phía Dino
     }
 
     void draw() {
-        SDL_Rect bulletRect = { x, y, w, h };
-        SDL_SetRenderDrawColor(renderer, 255, 165, 0, 255);  // Màu cam cho đạn của boss
-        SDL_RenderFillRect(renderer, &bulletRect);
+        // Tạo vùng cắt (srcRect) nếu bạn muốn dùng sprite sheet, còn nếu chỉ có một hình ảnh thì không cần
+        SDL_Rect destRect = { x, y, w, h };
+        SDL_RenderCopy(renderer, texture, NULL, &destRect);  // Vẽ hình ảnh của viên đạn lên màn hình
     }
 
     bool checkCollisionWith(const slime& slime) {
         return !(x + w <= slime.x || x >= slime.x + slime.w || y + h <= slime.y || y >= slime.y + slime.h);
     }
 
-    bool outofscreen(){
-         return !(x>=0);
+    bool outofscreen() {
+        return x + w <= 0;
     }
 
+    // Destructor để giải phóng texture
+//    ~BossBullet() {
+//        if (texture) {
+//            SDL_DestroyTexture(texture);  // Giải phóng texture khi không còn sử dụng
+//        }
+//    }
 };
+
 
 
 
 struct Bullet {
     int x, y, w, h;
     int speed;
+    SDL_Texture* texture;  // Texture cho đạn
 
-    Bullet(int startX, int startY) : x(startX), y(startY), w(10), h(5), speed(5) {}
+    Bullet(int startX, int startY) : x(startX), y(startY), w(67), h(50), speed(5) {
+        // Tải texture cho đạn
+        texture = IMG_LoadTexture(renderer, "img\\bullet.png");  // Đảm bảo đường dẫn đúng
+        if (!texture) {
+            std::cerr << "Failed to load bullet texture! SDL_image Error: " << IMG_GetError() << std::endl;
+        }
+    }
 
     void move() {
         x += speed;  // Đạn di chuyển sang phải
     }
 
     void draw() {
+        // Vẽ đạn từ sprite sheet
         SDL_Rect bulletRect = { x, y, w, h };
-        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);  // Màu xanh dương cho đạn
-        SDL_RenderFillRect(renderer, &bulletRect);
+        SDL_RenderCopy(renderer, texture, NULL, &bulletRect);  // Vẽ từ texture
     }
 
     bool checkCollisionWith(const Enemy& enemy) {
@@ -67,18 +90,28 @@ struct Bullet {
         return !(x + w <= slime.x || x >= slime.x + slime.w || y + h <= slime.y || y >= slime.y + slime.h);
     }
 
+    bool checkCollisionWith(const BossBullet& bossbullet) {
+        return !(x + w <= bossbullet.x || x >= bossbullet.x + bossbullet.w || y + h <= bossbullet.y || y >= bossbullet.y + bossbullet.h);
+    }
+
     bool checkCollisionWith(const Obstacle& obstacle) {
-    // Kiểm tra va chạm giữa Bullet và Obstacle
-    // Giả sử Bullet có vị trí (x, y) và kích thước (width, height)
-    return this->x < obstacle.x + obstacle.w &&
-           this->x + this->w > obstacle.x &&
-           this->y < obstacle.y + obstacle.h &&
-           this->y + this->h > obstacle.y;
-}
+        // Kiểm tra va chạm giữa Bullet và Obstacle
+        return this->x < obstacle.x + obstacle.w &&
+               this->x + this->w > obstacle.x &&
+               this->y < obstacle.y + obstacle.h &&
+               this->y + this->h > obstacle.y;
+    }
 
     bool outofscreen(){
-         return !(x<=800);
+        return x > 800;  // Kiểm tra nếu đạn ra ngoài màn hình
     }
+
+    // Destructor để giải phóng texture khi không sử dụng nữa
+//    ~Bullet() {
+//        if (texture) {
+//            SDL_DestroyTexture(texture);  // Giải phóng texture khi không còn sử dụng
+//        }
+//    }
 };
 
 
