@@ -47,6 +47,8 @@
 		<Unit filename="Bullet.h" />
 		<Unit filename="Enemy.h" />
 		<Unit filename="Game.h" />
+		<Unit filename="Gameover.h" />
+		<Unit filename="Menu.h" />
 		<Unit filename="Obstacle.h" />
 		<Unit filename="Slime.h" />
 		<Unit filename="main.cpp" />

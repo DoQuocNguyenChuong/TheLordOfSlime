@@ -42,7 +42,7 @@ bool init() {
     }
 
     // Mở font
-    font = TTF_OpenFont("lazy.ttf", 50);  // Thay đường dẫn đúng đến file font của bạn
+    font = TTF_OpenFont("VMELIBI.ttf", 50);  // Thay đường dẫn đúng đến file font của bạn
     if (!font) {
         std::cerr << "Font could not be loaded! TTF_Error: " << TTF_GetError() << std::endl;
         return false;
@@ -56,7 +56,7 @@ bool init() {
     }
 
     // Tải hình ảnh nền
-    backgroundTexture = IMG_LoadTexture(renderer, "img\\forest.png");
+    backgroundTexture = IMG_LoadTexture(renderer, "img\\background\\forest.png");
     if (backgroundTexture == nullptr) {
         std::cerr << "Failed to load background image! SDL_image Error: " << IMG_GetError() << std::endl;
         return false;

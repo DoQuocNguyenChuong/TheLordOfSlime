@@ -13,16 +13,17 @@ struct slime {
     int velY, velX, velZ;  // Tốc độ rơi (trọng lực)
     bool isJumping, turnright, turnleft, isShooting;
     int health;  // Thanh máu
+    int maxhealth;
     SDL_Texture* texture;  // Texture cho slime
     int currentFrameX;  // Khung hình hiện tại của slime (theo cột)
     int currentFrameY;  // Khung hình hiện tại của slime (theo hàng)
     int frameTimer;  // Bộ đếm thời gian để thay đổi khung hình
     int frameSpeed;  // Tốc độ thay đổi khung hình (thay đổi khung hình mỗi 2 lần cập nhật)
 
-    slime()
-         : x(100), y(470), w(80), h(80), velY(0), isJumping(false),isShooting(false), health(10), currentFrameX(0), currentFrameY(0), frameTimer(0), frameSpeed(2) {
+    slime(int health)
+         : x(100), y(470), w(80), h(80), velY(0), isJumping(false),isShooting(false), health(health),maxhealth(health), currentFrameX(0), currentFrameY(0), frameTimer(0), frameSpeed(2) {
         // Tải spritesheet cho slime
-        texture = IMG_LoadTexture(renderer, "img/slime.png");  // Đảm bảo đường dẫn đúng
+        texture = IMG_LoadTexture(renderer, "img\\slime\\slime.png");  // Đảm bảo đường dẫn đúng
         if (!texture) {
             std::cerr << "Failed to load slime texture! SDL_image Error: " << IMG_GetError() << std::endl;
         }
@@ -35,8 +36,8 @@ struct slime {
             velY += 1;  // Gia tốc trọng lực
 
             // Nếu slime đã rơi xuống mặt đất, dừng lại
-            if (y >= 450) {
-                y = 450;  // Đảm bảo slime không xuyên qua mặt đất
+            if (y >= 470) {
+                y = 470;  // Đảm bảo slime không xuyên qua mặt đất
                 isJumping = false;  // Dừng nhảy
                 velY = 0;  // Dừng chuyển động dọc
                 currentFrameY = 2;
@@ -137,7 +138,7 @@ struct slime {
         SDL_RenderFillRect(renderer, &healthBar);  // Vẽ thanh máu
 
         // Vẽ thanh máu còn lại
-        healthBar.w = (200 * health) / 10;
+        healthBar.w = (200 * health) / maxhealth;
         SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);  // Màu xanh cho phần máu còn lại
         SDL_RenderFillRect(renderer, &healthBar);  // Vẽ thanh máu còn lại
     }

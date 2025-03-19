@@ -10,6 +10,8 @@
 #include "Boss.h"
 #include "Bullet.h"
 #include "Obstacle.h"
+#include "Menu.h"
+#include "Gameover.h"
 
 
 int main(int argc, char* argv[]) {
@@ -20,8 +22,19 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-    bool quit = false;
+
+     bool quit = false;
     SDL_Event e;
+
+     // Main game loop
+    while (!quit) {
+
+    // Hiển thị menu và chọn độ khó
+    Difficulty difficulty = showMenu(renderer, windowWidth, windowHeight);
+
+    bool gameover=false;
+    bool restartGame=false;
+
 
     int backgroundX = 0; // Vị trí cuộn của nền
     const int backgroundSpeed = 3; // Tốc độ cuộn nền
@@ -32,37 +45,85 @@ int main(int argc, char* argv[]) {
     std::vector<Boss> bosses;     // Danh sách các boss
     std::vector<BossBullet> bossBullets;  // Đạn của boss
 
-    slime slime;
-
-
     int enemykilled = 0;  // Đếm số lượng kẻ địch bị tiêu diệt
     bool battleWithBoss = false;
    // bool nha_dan=false;
-    bool di_trai=false;
-    bool di_phai=false;
 
-    int numObstacle = rand()%20+30;
-    for(int i=0;i<numObstacle;i++){
-        // Thêm một enemy mới vào danh sách enemies
-        obstacles.push_back(Obstacle(400+i*400,500));
+       int slimehealth=0;
+       int numObstacle = 0;
+       int numEnemies = 0;
+       int numToKillForBoss = 0;
+       int bossHealth = 0;
+       int numofbossbullet=0;
+       int speedofobs=0,speedofenemies=0,speedofboss=0,speedofbossbullet=0;
+
+       switch (difficulty) {
+        case EASY:
+             numObstacle = 20;    // Số lượng chướng ngại vật trong chế độ dễ
+            numEnemies = 20;     // Số lượng kẻ địch trong chế độ dễ
+            numToKillForBoss = 5; // Cần giết 5 kẻ địch để boss xuất hiện
+            bossHealth = 50;     // Máu của boss trong chế độ dễ
+            numofbossbullet=1;
+            speedofobs=5;
+            speedofenemies=3;
+            speedofbossbullet=-5;
+            speedofboss=1;
+            slimehealth=10;
+            break;
+        case MEDIUM:
+            numObstacle = 40;    // Số lượng chướng ngại vật trong chế độ trung bình
+            numEnemies = 40;     // Số lượng kẻ địch trong chế độ trung bình
+            numToKillForBoss = 10; // Cần giết 10 kẻ địch để boss xuất hiện
+            bossHealth = 100;    // Máu của boss trong chế độ trung bình
+            numofbossbullet=2;
+            speedofobs=10;
+            speedofenemies=6;
+            speedofbossbullet=-10;
+            speedofboss=2;
+            slimehealth=20;
+            break;
+        case HARD:
+            numObstacle = 80;    // Số lượng chướng ngại vật trong chế độ khó
+            numEnemies = 80;     // Số lượng kẻ địch trong chế độ khó
+            numToKillForBoss = 20; // Cần giết 20 kẻ địch để boss xuất hiện
+            bossHealth = 200;    // Máu của boss trong chế độ khó
+            numofbossbullet=3;
+            speedofobs=15;
+            speedofenemies=9;
+            speedofbossbullet=-15;
+            speedofboss=4;
+            slimehealth=50;
+            break;
     }
 
-    int numEnemies = rand() % 20+ 30;
-    for(int i=0;i<numEnemies;i++){
-        // Thêm một enemy mới vào danh sách enemies
-        enemies.push_back(Enemy(600+i*300,200+i*30));
+
+    slime slime(slimehealth);
+
+     // Tạo chướng ngại vật
+    for (int i = 0; i < numObstacle; i++) {
+        obstacles.push_back(Obstacle(400 + i * 400, 500,speedofobs));
     }
+
+    // Tạo kẻ địch
+    for (int i = 0; i < numEnemies; i++) {
+        enemies.push_back(Enemy(600 + i * 300, 200 + i * 30,speedofenemies));
+    }
+
+
+
 
     Uint32 lastShotTime = 0;  // Biến lưu trữ thời gian bắn lần trước
     const Uint32 shootDelay = 300;  // Thời gian trễ giữa các lần bắn (300 ms)
 
     // Vòng lặp game chính
-    while (!quit) {
+    while (!gameover && !quit) {
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT) {
                 quit = true;
             }
 
+             bool di_trai=false;
+             bool di_phai=false;
             if (e.type == SDL_KEYDOWN) {
                 if (e.key.keysym.sym == SDLK_UP){
                     slime.jump();  // Nhảy khi nhấn up
@@ -125,6 +186,7 @@ int main(int argc, char* argv[]) {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);  // Màu đen (hoặc bất kỳ màu nào bạn muốn cho nền)
         SDL_RenderClear(renderer);  // Xóa màn hình
 
+
         // Cập nhật vị trí cuộn nền
         backgroundX -= backgroundSpeed;
         if (backgroundX <= -windowWidth) {
@@ -182,8 +244,8 @@ int main(int argc, char* argv[]) {
         // Boss bắn đạn
                 // Boss bắn đạn
         if (battleWithBoss) {
-            if (rand() % 100 < 1) {  // Tỉ lệ xuất hiện đạn của boss
-                bossBullets.push_back(BossBullet(bosses[0].x, bosses[0].y + 30));
+            if (rand() % 100 < numofbossbullet) {  // Tỉ lệ xuất hiện đạn của boss
+                bossBullets.push_back(BossBullet(bosses[0].x, bosses[0].y + 30,speedofbossbullet));
                 // Khi boss bắn đạn, bật chế độ hoạt hình (start shooting)
                 bosses[0].startShooting();
             }
@@ -265,9 +327,6 @@ int main(int argc, char* argv[]) {
                     boss.health -= 1;  // Boss mất 1 máu mỗi lần bị trúng đạn
                     bulletDestroyed = true;
                     if (boss.health <= 0) {
-                        renderText("You Win! Boss defeated!", 300, 200);
-                        SDL_RenderPresent(renderer);
-                        SDL_Delay(2000);  // Hiển thị Game Over trong 2 giây
                         quit = true;  // Kết thúc game khi boss chết
                     }
                     break;
@@ -349,21 +408,25 @@ for (auto it = bullets.begin(); it != bullets.end();) {
 }
 
         // Kiểm tra xem số lượng kẻ địch nhỏ đã đạt 10 chưa
-        if (enemykilled >= 10 && bosses.empty()) {
-            bosses.push_back(Boss());  // Tạo boss khi đủ 10 kẻ địch nhỏ bị tiêu diệt
+        if (enemykilled >= numToKillForBoss  && bosses.empty()) {
+            bosses.push_back(Boss(bossHealth,speedofboss));  // Tạo boss khi đủ 10 kẻ địch nhỏ bị tiêu diệt
             enemies.clear();  // Xóa hết kẻ địch nhỏ
             obstacles.clear(); // xoa het chuong ngai vat;
             battleWithBoss = true;  // Dừng màn hình cho trận chiến với boss
         }
 
-        // Dừng game khi slime hết máu
-            if (slime.health <= 0) {
-               renderText("Game Over! You died!", 300, 200);
-               std::cout << "Game Over! slime died!" << std::endl;
-               SDL_RenderPresent(renderer);
-               SDL_Delay(2000);  // Hiển thị Game Over trong 2 giây
-               quit = true;
-            }
+        // Kiểm tra xem slime có hết máu không
+        if (slime.health <= 0) {
+            gameover = true;  // Exit the game
+        }
+
+         // Nếu boss bị đánh bại
+       for (auto& boss : bosses) {
+             if (boss.health <= 0) {
+                gameover = true;  // End the game loop
+                break;
+           }
+        }
 
 //        // Vẽ lại màn hình
 //        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);  // Màu nền trắng
@@ -399,6 +462,16 @@ for (auto it = bullets.begin(); it != bullets.end();) {
         // Giới hạn tốc độ khung hình
         SDL_Delay(16);  // Khoảng 60 FPS
     }
+        // When the game ends, show the game over screen
+        restartGame = showGameOverScreen(renderer, windowWidth, windowHeight, slime.health > 0);
+
+        if (restartGame) {
+            continue;  // Restart the game by continuing the loop
+        } else {
+            quit = true;  // Exit the game and go back to the menu
+        }
+    }
+
 
     close();
     return 0;

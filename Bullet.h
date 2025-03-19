@@ -16,11 +16,11 @@ struct BossBullet {
     int speed;
     SDL_Texture* texture;  // Texture cho viên đạn
 
-    BossBullet(int startX, int startY)
-        : x(startX), y(startY), w(67), h(50), speed(-10) {
+    BossBullet(int startX, int startY,int speed)
+        : x(startX), y(startY), w(50), h(40), speed(speed) {
 
         // Tải hình ảnh cho viên đạn
-        texture = IMG_LoadTexture(renderer, "img/bossbullet.png");  // Đường dẫn tới hình ảnh của viên đạn
+        texture = IMG_LoadTexture(renderer, "img\\bullet\\bossbullet.png");  // Đường dẫn tới hình ảnh của viên đạn
         if (!texture) {
             std::cerr << "Failed to load boss bullet texture! SDL_image Error: " << IMG_GetError() << std::endl;
         }
@@ -62,7 +62,7 @@ struct Bullet {
 
     Bullet(int startX, int startY) : x(startX), y(startY), w(67), h(50), speed(5) {
         // Tải texture cho đạn
-        texture = IMG_LoadTexture(renderer, "img\\bullet.png");  // Đảm bảo đường dẫn đúng
+        texture = IMG_LoadTexture(renderer, "img\\bullet\\bullet.png");  // Đảm bảo đường dẫn đúng
         if (!texture) {
             std::cerr << "Failed to load bullet texture! SDL_image Error: " << IMG_GetError() << std::endl;
         }

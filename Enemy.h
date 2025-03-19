@@ -18,12 +18,12 @@ struct Enemy {
     int frameDelay;  // Thời gian delay giữa mỗi khung hình
     int frameTimer;  // Bộ đếm thời gian để quản lý frame delay
 
-    Enemy(int startX, int startY)
-        : x(startX), y(startY), w(100), h(100), health(1), speed(3),
+    Enemy(int startX, int startY,int speed)
+        : x(startX), y(startY), w(100), h(80), health(1), speed(speed),
           currentFrame(0), frameWidth(150), frameHeight(150),
           numCols(4), numRows(3), frameDelay(16), frameTimer(0) {
 
-        spriteSheet = IMG_LoadTexture(renderer, "img\\fireelement.png");
+        spriteSheet = IMG_LoadTexture(renderer, "img\\enemy\\fireelement.png");
 
         if (!spriteSheet) {
             std::cerr << "Không thể tải sprite sheet của Enemy! SDL_image Error: " << IMG_GetError() << std::endl;

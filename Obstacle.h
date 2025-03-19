@@ -18,12 +18,12 @@ struct Obstacle {
     int frameDelay;  // Thời gian delay giữa mỗi khung hình
     int frameTimer;  // Bộ đếm thời gian để quản lý frame delay
 
-    Obstacle(int startX, int startY)
-        : x(startX), y(startY), w(100), h(100), speed(5),
+    Obstacle(int startX, int startY,int speed)
+        : x(startX), y(startY), w(100), h(100), speed(speed),
           currentFrame(0), frameWidth(150), frameHeight(150),
           numCols(4), numRows(4), frameDelay(16), frameTimer(0) {
 
-    spriteSheet = IMG_LoadTexture(renderer, "img\\earthelement.png");  // Tải hình ảnh chướng ngại vật
+    spriteSheet = IMG_LoadTexture(renderer, "img\\enemy\\earthelement.png");  // Tải hình ảnh chướng ngại vật
         if (!spriteSheet) {
             std::cerr << "Failed to load earthelement image! SDL_image Error: " << IMG_GetError() << std::endl;
         }

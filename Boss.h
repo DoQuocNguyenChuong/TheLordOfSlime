@@ -11,6 +11,7 @@
 struct Boss {
     int x, y, w, h;
     int health;
+    int maxHealth;   // Máu tối đa của boss
     int speed;
     SDL_Texture* texture;  // Texture cho Boss từ sprite sheet
     int currentFrame;       // Khung hình hiện tại
@@ -21,11 +22,11 @@ struct Boss {
     bool isShooting=true;        // Cờ kiểm tra xem Boss có đang bắn đạn không
     int animationSpeed;     // Tốc độ thay đổi khung hình
 
-    Boss()
-        : x(windowWidth - 150), y(200), w(100), h(100), health(100), speed(2), currentFrame(0),
+    Boss(int bosshealth,int speed)
+        : x(windowWidth - 150), y(200), w(100), h(100), health(bosshealth),maxHealth(bosshealth), speed(speed), currentFrame(0),
           frameWidth(300), frameHeight(300), numCols(4), numRows(4), isShooting(false),animationSpeed(1) {
 
-        texture = IMG_LoadTexture(renderer, "img\\fireelementboss.png");  // Tải sprite sheet
+        texture = IMG_LoadTexture(renderer, "img\\enemy\\fireelementboss.png");  // Tải sprite sheet
         if (!texture) {
             std::cerr << "Failed to load boss sprite sheet! SDL_image Error: " << IMG_GetError() << std::endl;
         }
@@ -71,7 +72,7 @@ struct Boss {
         SDL_RenderFillRect(renderer, &healthBar);
 
         // Vẽ thanh máu còn lại
-        healthBar.w = (w * health) / 100;  // Tỉ lệ phần trăm máu của boss
+        healthBar.w = (w * health) / maxHealth;  // Tỉ lệ phần trăm máu của boss
         SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);  // Màu xanh cho máu còn lại
         SDL_RenderFillRect(renderer, &healthBar);
     }
