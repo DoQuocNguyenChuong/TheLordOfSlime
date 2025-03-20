@@ -8,7 +8,13 @@
   + Đây là tựa game lấy cảm hứng từ bộ anime "chuyển sinh thành slime". 
    // Nguồn: https://vi.wikipedia.org/wiki/V%E1%BB%81_chuy%E1%BB%87n_t%C3%B4i_chuy%E1%BB%83n_sinh_th%C3%A0nh_Slime
   + Logic game có sự tham khảo từ Dino in zungle và có sự hỗ trợ của chatGPT
-   // Nguồn: https://github.com/thai-nm/dino-in-zungle 
+   // Nguồn: https://github.com/thai-nm/dino-in-zungle
+  + Âm thanh có lấy từ Dino in zungle và từ các trang web trên mạng
+   // Nguồn: +) https://github.com/thai-nm/dino-in-zungle
+             +) https://pixabay.com/vi/sound-effects/search/chi%E1%BA%BFn%20th%E1%BA%AFng/
+  + Ảnh: +) Các nhân vật và đạn: tự vẽ
+         +) Background: lấy từ trên mạng
+(*) Các phiên bản và sự cải tiến:
 - Ngày 11/03/2025: version 0.1: đây là phiên bản đơn sơ nhất( chỉ bao gồm nguyên lí hoạt động của game)
 - Ngày 12/03/2025: version 0.2
   + Phiên bản này đã có cải tiến thêm file ttf để hiện lên màn hình phần game over
@@ -21,3 +27,7 @@
 - Ngày 20/03/2025: version 1.5
   + Phiên bản này có sự hoàn thiện hơn( đã có thêm menu với 3 mức độ easy,medium,hard) và thay đổi các chỉ số của các nhân vật theo từng chế độ
   + Phiên bản này cũng đã hoàn thiện sơ bộ được bộ nút restart và exit với chức năng(restart: quay lại màn hình menu và exit: thoát khỏi game)
+- Ngày 21/03/2025: version 2.01
+  + Đây là phiên bản có sự đầy đủ nhất (có thêm âm thanh khi chọn ở menu, khi nhảy, khi vào màn chơi, khi bấm chuột)
+  + Phiên bản này còn có sự cải tiến các nút bấm khi ở màn menu và gameover
+  + Ở phiên bản này còn có thêm tính năng pause khi người chơi nhấn phím "P"
