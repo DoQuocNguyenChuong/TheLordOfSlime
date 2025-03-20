@@ -18,3 +18,6 @@
 - Ngày 19/03/2025: version 1.0
   + Đây là phiên bản hoàn thiện logic game đầu tiên( sửa xóa đạn và obs khi ra ngoài màn hình, thêm kiểm tra va chạm khi 2 đạn của boss và slime gặp nhau)
   + Ở phiên bản này đã thêm được texture cho các nhân vật(slime, obs, địch nhỏ, boss, đạn của boss và slime) và làm cho background cuộn theo sự di chuyển cho màn hình
+- Ngày 20/03/2025: version 1.5
+  + Phiên bản này có sự hoàn thiện hơn( đã có thêm menu với 3 mức độ easy,medium,hard) và thay đổi các chỉ số của các nhân vật theo từng chế độ
+  + Phiên bản này cũng đã hoàn thiện sơ bộ được bộ nút restart và exit với chức năng(restart: quay lại màn hình menu và exit: thoát khỏi game)
