@@ -908,7 +908,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1742419784 source:c:\users\nguyen chuong\thelordofslime\main.cpp
+1742491183 source:c:\users\nguyen chuong\thelordofslime\main.cpp
 	<SDL.h>
 	<iostream>
 	<vector>
@@ -924,7 +924,7 @@
 	"Menu.h"
 	"Gameover.h"
 
-1742409756 c:\users\nguyen chuong\thelordofslime\game.h
+1742490153 c:\users\nguyen chuong\thelordofslime\game.h
 	<SDL.h>
 	<iostream>
 	<vector>
@@ -932,8 +932,9 @@
 	<ctime>
 	<SDL_ttf.h>
 	<SDL_image.h>
+	<SDL_mixer.h>
 
-1742419843 c:\users\nguyen chuong\thelordofslime\slime.h
+1742489103 c:\users\nguyen chuong\thelordofslime\slime.h
 	<SDL.h>
 	<iostream>
 	<vector>
@@ -950,7 +951,7 @@
 	<ctime>
 	"Game.h"
 
-1742413906 c:\users\nguyen chuong\thelordofslime\boss.h
+1742486371 c:\users\nguyen chuong\thelordofslime\boss.h
 	<SDL.h>
 	<iostream>
 	<vector>
@@ -988,15 +989,25 @@
 	<vector>
 	<iostream>
 
-1742414938 c:\users\nguyen chuong\thelordofslime\menu.h
+1742490091 c:\users\nguyen chuong\thelordofslime\menu.h
 	<SDL.h>
 	<SDL_ttf.h>
 	<iostream>
+	"Game.h"
 
-1742419005 c:\users\nguyen chuong\thelordofslime\gameover.h
+1742491056 c:\users\nguyen chuong\thelordofslime\gameover.h
 	<SDL.h>
 	<SDL_ttf.h>
 	<iostream>
 	<string>
 	"Menu.h"
+
+1738962281 d:\sdl2_mixer-devel-2.8.1-mingw\sdl2_mixer-2.8.1\x86_64-w64-mingw32\include\sdl2\sdl_mixer.h
+	"SDL_stdinc.h"
+	"SDL_rwops.h"
+	"SDL_audio.h"
+	"SDL_endian.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
 

@@ -13,7 +13,6 @@
 #include "Menu.h"
 #include "Gameover.h"
 
-
 int main(int argc, char* argv[]) {
     srand(static_cast<unsigned int>(time(0)));
 
@@ -22,20 +21,29 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
+   // Tải các tệp âm thanh và hình ảnh
+    if (!loadMedia()) {
+        std::cerr << "Failed to load media!" << std::endl;
+        return -1;
+    }
+
 
      bool quit = false;
     SDL_Event e;
+    // Khởi tạo biến thời gian
+    uint32_t startTime = SDL_GetTicks();  // Lấy thời gian bắt đầu game
+    uint32_t elapsedTime = 0;  // Biến lưu trữ thời gian đã trôi qua
+    uint32_t timeLimit = 0;  // Thời gian giới hạn (5 phút = 300000 ms)
 
-     // Main game loop
     while (!quit) {
 
     // Hiển thị menu và chọn độ khó
     Difficulty difficulty = showMenu(renderer, windowWidth, windowHeight);
 
+
     bool gameover=false;
     bool restartGame=false;
-
-
+    bool isPaused = false;  // Trạng thái tạm dừng
     int backgroundX = 0; // Vị trí cuộn của nền
     const int backgroundSpeed = 3; // Tốc độ cuộn nền
 
@@ -62,13 +70,15 @@ int main(int argc, char* argv[]) {
              numObstacle = 20;    // Số lượng chướng ngại vật trong chế độ dễ
             numEnemies = 20;     // Số lượng kẻ địch trong chế độ dễ
             numToKillForBoss = 5; // Cần giết 5 kẻ địch để boss xuất hiện
-            bossHealth = 50;     // Máu của boss trong chế độ dễ
+            bossHealth = 1;     // Máu của boss trong chế độ dễ
             numofbossbullet=1;
             speedofobs=5;
             speedofenemies=3;
             speedofbossbullet=-5;
             speedofboss=1;
             slimehealth=10;
+            timeLimit=30*1000;
+
             break;
         case MEDIUM:
             numObstacle = 40;    // Số lượng chướng ngại vật trong chế độ trung bình
@@ -81,6 +91,7 @@ int main(int argc, char* argv[]) {
             speedofbossbullet=-10;
             speedofboss=2;
             slimehealth=20;
+            timeLimit=4*60*1000;
             break;
         case HARD:
             numObstacle = 80;    // Số lượng chướng ngại vật trong chế độ khó
@@ -93,6 +104,7 @@ int main(int argc, char* argv[]) {
             speedofbossbullet=-15;
             speedofboss=4;
             slimehealth=50;
+            timeLimit=8*60*1000;
             break;
     }
 
@@ -115,16 +127,32 @@ int main(int argc, char* argv[]) {
     Uint32 lastShotTime = 0;  // Biến lưu trữ thời gian bắn lần trước
     const Uint32 shootDelay = 300;  // Thời gian trễ giữa các lần bắn (300 ms)
 
+     playBackgroundMusic();
+
     // Vòng lặp game chính
     while (!gameover && !quit) {
+    if (isPaused) {
+            pauseGame(renderer, font, windowWidth, windowHeight, isPaused, restartGame);
+            if(restartGame==true) slime.health=0;
+        }
+
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT) {
+                slime.health=0;
                 quit = true;
             }
 
              bool di_trai=false;
              bool di_phai=false;
             if (e.type == SDL_KEYDOWN) {
+
+
+                if (e.key.keysym.sym == SDLK_p) {
+                        isPaused = !isPaused;  // Đảo ngược trạng thái tạm dừng khi nhấn phím P
+                    }
+
+
+                if (!isPaused) {
                 if (e.key.keysym.sym == SDLK_UP){
                     slime.jump();  // Nhảy khi nhấn up
                 }
@@ -149,17 +177,8 @@ int main(int argc, char* argv[]) {
                   bullets.push_back(Bullet(x1, y1));  // Tạo đạn tại vị trí slime
                   lastShotTime = SDL_GetTicks();  // Cập nhật thời gian bắn
                    }
-
-
-//                if (e.key.keysym.sym == SDLK_w){
-//                    if(!nha_dan){
-//                    int x1=slime.x + slime.w;
-//                    int y1= slime.y + slime.h / 2 - 2;
-//                    bullets.push_back(Bullet(x1, y1));  // Vị trí bắn từ giữa nhân vật
-//                    nha_dan=true;
-//                    }
-//                 }
-            }
+                  }
+               }
 
             if (e.type == SDL_KEYUP) {
                  if (e.key.keysym.sym == SDLK_LEFT) {
@@ -170,12 +189,10 @@ int main(int argc, char* argv[]) {
                     di_phai = false;
                     slime.stopRight();  // Dừng di chuyển sang phải khi nhả phím
                   }
-
-//             if (e.key.keysym.sym == SDLK_w) {
-//                  nha_dan = false;
-//                  }
-           }
+              }
         }
+
+
 
         backgroundX -= backgroundSpeed;
 
@@ -201,7 +218,31 @@ int main(int argc, char* argv[]) {
         SDL_RenderCopy(renderer, backgroundTexture, NULL, &backgroundRect2);
 
 
-        // Di chuyển Dino
+        // Cập nhật thời gian đã trôi qua
+            elapsedTime = SDL_GetTicks() - startTime;  // Tính thời gian trôi qua kể từ khi game bắt đầu
+            // Kiểm tra nếu hết thời gian giới hạn
+            if (elapsedTime >= timeLimit) {
+                slime.health=0;
+                onLose();
+                gameover = true;  // Kết thúc game nếu hết thời gian
+            }
+
+
+            // Tính thời gian còn lại
+            uint32_t remainingTime = timeLimit - elapsedTime;
+            uint32_t secondsRemaining = remainingTime / 1000;  // Thời gian còn lại (giây)
+
+            // Hiển thị thời gian đếm ngược
+            std::string timeText = "Time limited: " + std::to_string(secondsRemaining) + "  s";  // Thời gian còn lại
+            renderText(timeText, 200, 0);  // Hiển thị thời gian ở góc trên bên trái
+
+
+
+
+
+
+
+        // Di chuyển slime
         slime.move();
 
         // Di chuyển chướng ngại vật va xoa cac chuong ngai vat khi ra khoi man hinh
@@ -417,14 +458,15 @@ for (auto it = bullets.begin(); it != bullets.end();) {
 
         // Kiểm tra xem slime có hết máu không
         if (slime.health <= 0) {
+            onLose();
             gameover = true;  // Exit the game
         }
 
          // Nếu boss bị đánh bại
        for (auto& boss : bosses) {
              if (boss.health <= 0) {
+                onWin();
                 gameover = true;  // End the game loop
-                break;
            }
         }
 
@@ -452,27 +494,50 @@ for (auto it = bullets.begin(); it != bullets.end();) {
             bossBullet.draw();
         }
 
-        // Render số lượng kẻ địch bị giết
-        renderText("Enemies Killed: " + std::to_string(enemykilled), 400, 25);
 
+        if (isPaused) {
+                // Hiển thị màn hình tạm dừng
+                SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+                SDL_RenderClear(renderer);
+
+                // Vẽ chữ "PAUSE" lên màn hình
+                renderText("PAUSED", windowWidth / 2 - 50, windowHeight / 2 - 20);
+
+                SDL_RenderPresent(renderer);
+                SDL_Delay(100);  // Để không tốn tài nguyên quá mức
+                continue;  // Dừng vòng lặp chính để không tiếp tục cập nhật khi tạm dừng
+            }
+
+
+
+
+        // Render số lượng kẻ địch bị giết
+        renderText("Enemies Killed: " + std::to_string(enemykilled), 400, 100);
+//        // Hiển thị chế độ hiện tại (EASY, MEDIUM, HARD)
+        renderDifficultyOnScreen(renderer, font, difficulty, windowWidth, windowHeight);
 
         // Cập nhật màn hình
         SDL_RenderPresent(renderer);
 
+
         // Giới hạn tốc độ khung hình
         SDL_Delay(16);  // Khoảng 60 FPS
-    }
-        // When the game ends, show the game over screen
-        restartGame = showGameOverScreen(renderer, windowWidth, windowHeight, slime.health > 0);
 
-        if (restartGame) {
-            continue;  // Restart the game by continuing the loop
+    }
+
+        // When the game ends, show the game over screen
+       restartGame = showGameOverScreen(renderer, windowWidth, windowHeight, slime.health > 0);
+
+        if (restartGame ) {
+            startTime = SDL_GetTicks();
+            quit=false;
+            continue;
         } else {
             quit = true;  // Exit the game and go back to the menu
         }
     }
 
-
+    freeMedia();
     close();
     return 0;
 }

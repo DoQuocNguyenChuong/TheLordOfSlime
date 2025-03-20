@@ -4,54 +4,33 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <iostream>
+#include "Game.h"
 
-enum Difficulty {
-    EASY,
-    MEDIUM,
-    HARD
-};
 
 // Hàm hiển thị menu và trả về mức độ khó được chọn
 Difficulty showMenu(SDL_Renderer* renderer, int windowWidth, int windowHeight) {
     SDL_Event e;
     bool quit = false;
-    Difficulty selectedDifficulty = MEDIUM; // Mặc định là mức độ trung bình
+    Difficulty selectedDifficulty = EASY; // Mặc định là mức độ trung bình
 
     // Load font cho tên game và các nút
-    TTF_Font* titleFont = TTF_OpenFont("VMELIBI.ttf", 80);  // Đường dẫn đến font của bạn
-    if (!titleFont) {
-        std::cerr << "Failed to load font!" << std::endl;
-        return EASY;
-    }
+    TTF_Font* titleFont = TTF_OpenFont("VNI-Nhatban.ttf", 50);  // Đường dẫn đến font của bạn
 
     // Load background image for the menu
     SDL_Texture* backgroundTexture = loadTexture("img\\background\\backgroundmenu.png", renderer);
-    if (!backgroundTexture) {
-        return EASY;  // Trả về mặc định nếu không thể load background
-    }
 
     // Load font for the button text
-    TTF_Font* font = TTF_OpenFont("VMELIBI.ttf", 50);  // Đường dẫn đến font của bạn
-    if (!font) {
-        std::cerr << "Failed to load font!" << std::endl;
-        return EASY;
-    }
-
-
-
-    SDL_Color textColoreasy = {255, 0, 0};
-    SDL_Color textColormedium = {0, 255, 0};
-    SDL_Color textColorhard = {0, 0, 255};
+    TTF_Font* font = TTF_OpenFont("VNI-Nhatban.ttf", 30);  // Đường dẫn đến font của bạn
 
     // Tạo texture cho tên game
-    SDL_Surface* titleSurface = TTF_RenderText_Solid(titleFont, "The lord of Slime ", {0, 0, 0});
+    SDL_Surface* titleSurface = TTF_RenderText_Solid(titleFont, "The lord of Slime ", {70, 130, 180});
     SDL_Texture* titleTexture = SDL_CreateTextureFromSurface(renderer, titleSurface);
     SDL_FreeSurface(titleSurface);
 
     // Tạo texture cho các lựa chọn độ khó
-    SDL_Surface* easySurface = TTF_RenderText_Solid(font, "Easy", textColoreasy);
-    SDL_Surface* mediumSurface = TTF_RenderText_Solid(font, "Medium", textColormedium);
-    SDL_Surface* hardSurface = TTF_RenderText_Solid(font, "Hard", textColorhard);
+    SDL_Surface* easySurface = TTF_RenderText_Solid(font, "Easy", {255, 255, 255});
+    SDL_Surface* mediumSurface = TTF_RenderText_Solid(font, "Medium",{255, 255, 255});
+    SDL_Surface* hardSurface = TTF_RenderText_Solid(font, "Hard", {255, 255, 255});
 
     SDL_Texture* easyTextTexture = SDL_CreateTextureFromSurface(renderer, easySurface);
     SDL_Texture* mediumTextTexture = SDL_CreateTextureFromSurface(renderer, mediumSurface);
@@ -75,6 +54,11 @@ Difficulty showMenu(SDL_Renderer* renderer, int windowWidth, int windowHeight) {
     SDL_Rect mediumButtonRect = {windowWidth / 2 - mediumTextWidth / 2, windowHeight / 2 - mediumTextHeight / 2 + 50, mediumTextWidth, mediumTextHeight};
     SDL_Rect hardButtonRect = {windowWidth / 2 - hardTextWidth / 2, windowHeight / 2 - hardTextHeight / 2 + 150, hardTextWidth, hardTextHeight};
 
+    bool isEasyHovered = false;
+    bool isMediumHovered = false;
+    bool isHardHovered = false;
+     // Phát nhạc menu ban đầu
+    playMenuMusic();
     while (!quit) {
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT) {
@@ -82,7 +66,21 @@ Difficulty showMenu(SDL_Renderer* renderer, int windowWidth, int windowHeight) {
             }
 
             // Handle mouse events
+            if (e.type == SDL_MOUSEMOTION) {
+                int x = e.motion.x;
+                int y = e.motion.y;
+
+                // Check if the mouse is hovering over any button
+                isEasyHovered = x >= easyButtonRect.x && x <= easyButtonRect.x + easyButtonRect.w &&
+                                 y >= easyButtonRect.y && y <= easyButtonRect.y + easyButtonRect.h;
+                isMediumHovered = x >= mediumButtonRect.x && x <= mediumButtonRect.x + mediumButtonRect.w &&
+                                  y >= mediumButtonRect.y && y <= mediumButtonRect.y + mediumButtonRect.h;
+                isHardHovered = x >= hardButtonRect.x && x <= hardButtonRect.x + hardButtonRect.w &&
+                                y >= hardButtonRect.y && y <= hardButtonRect.y + hardButtonRect.h;
+            }
+
             if (e.type == SDL_MOUSEBUTTONDOWN) {
+                 onClick();
                 if (e.button.button == SDL_BUTTON_LEFT) {
                     int x = e.button.x;
                     int y = e.button.y;
@@ -117,10 +115,10 @@ Difficulty showMenu(SDL_Renderer* renderer, int windowWidth, int windowHeight) {
         // Render the title
         SDL_RenderCopy(renderer, titleTexture, NULL, &titleRect);
 
-        // Render the difficulty buttons
-        SDL_RenderCopy(renderer, easyTextTexture, NULL, &easyButtonRect);
-        SDL_RenderCopy(renderer, mediumTextTexture, NULL, &mediumButtonRect);
-        SDL_RenderCopy(renderer, hardTextTexture, NULL, &hardButtonRect);
+        // Render the difficulty buttons with their hover effect
+        renderButton(renderer, font, "Easy", easyButtonRect.x, easyButtonRect.y, isEasyHovered);
+        renderButton(renderer, font, "Medium", mediumButtonRect.x, mediumButtonRect.y, isMediumHovered);
+        renderButton(renderer, font, "Hard", hardButtonRect.x, hardButtonRect.y, isHardHovered);
 
         // Update screen
         SDL_RenderPresent(renderer);
@@ -128,7 +126,7 @@ Difficulty showMenu(SDL_Renderer* renderer, int windowWidth, int windowHeight) {
         SDL_Delay(16);  // 60 FPS
     }
 
-   // Cleanup
+    // Cleanup
     SDL_DestroyTexture(backgroundTexture);
     SDL_DestroyTexture(easyTextTexture);
     SDL_DestroyTexture(mediumTextTexture);
@@ -139,5 +137,4 @@ Difficulty showMenu(SDL_Renderer* renderer, int windowWidth, int windowHeight) {
 
     return selectedDifficulty;
 }
-
 #endif // MENU_H

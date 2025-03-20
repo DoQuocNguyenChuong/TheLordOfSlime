@@ -92,6 +92,7 @@ struct slime {
             velY = -20;  // Tốc độ nhảy ban đầu
             isJumping = true;
             currentFrameY = 0;  // Lấy hàng đầu tiên khi nhảy
+            onJump();
         }
     }
 
@@ -133,16 +134,33 @@ struct slime {
     }
 
     void drawHealthBar() {
-        SDL_Rect healthBar = { 600, 0, 200, 50 };  // Thanh máu ở góc phải
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);  // Màu đỏ cho thanh máu
-        SDL_RenderFillRect(renderer, &healthBar);  // Vẽ thanh máu
+    // Vẽ viền cho thanh máu
+    SDL_Rect borderRect = { 600 - 2, 0 - 2, 200 + 4, 50 + 4 };  // Viền xung quanh thanh máu
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);  // Màu trắng cho viền
+    SDL_RenderFillRect(renderer, &borderRect);  // Vẽ viền ngoài
 
-        // Vẽ thanh máu còn lại
-        healthBar.w = (200 * health) / maxhealth;
-        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);  // Màu xanh cho phần máu còn lại
-        SDL_RenderFillRect(renderer, &healthBar);  // Vẽ thanh máu còn lại
+    // Tính toán tỷ lệ phần trăm máu còn lại
+    float healthPercentage = (float)health / maxhealth;
+
+    // Chọn màu sắc thanh máu tùy vào tỷ lệ máu còn lại
+    SDL_Color healthColor;
+    if (healthPercentage > 0.6f) {
+        healthColor = { 0, 255, 0, 255 };  // Màu xanh lá cây khi máu còn nhiều
+    } else if (healthPercentage > 0.3f) {
+        healthColor = { 255, 255, 0, 255 };  // Màu vàng khi máu còn ít
+    } else {
+        healthColor = { 255, 0, 0, 255 };  // Màu đỏ khi máu rất ít
     }
 
+    // Vẽ thanh máu
+    SDL_Rect healthBarRect = { 600, 0, (int)(200 * healthPercentage), 50 };
+    SDL_SetRenderDrawColor(renderer, healthColor.r, healthColor.g, healthColor.b, healthColor.a);  // Màu thanh máu
+    SDL_RenderFillRect(renderer, &healthBarRect);  // Vẽ thanh máu
+
+    // Vẽ số máu còn lại lên thanh máu
+    std::string healthText = std::to_string(health) + " / " + std::to_string(maxhealth);
+    renderText(healthText, 600 + 100, 25);  // Hiển thị số máu ở giữa thanh máu
+}
     // Destructor để giải phóng texture
 //    ~slime() {
 //        if (texture) {

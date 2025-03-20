@@ -21,7 +21,7 @@ bool showGameOverScreen(SDL_Renderer* renderer, int windowWidth, int windowHeigh
     }
 
     // Load font cho thông báo và nút restart
-    TTF_Font* font = TTF_OpenFont("VMELIBI.ttf", 50); // Đường dẫn tới font
+    TTF_Font* font = TTF_OpenFont("VNI-Nhatban.ttf", 50); // Đường dẫn tới font
     if (!font) {
         std::cerr << "Failed to load font!" << std::endl;
         return false;
@@ -66,6 +66,9 @@ bool showGameOverScreen(SDL_Renderer* renderer, int windowWidth, int windowHeigh
             // Handle mouse events (nút restart)
             if (e.type == SDL_MOUSEBUTTONDOWN) {
                 if (e.button.button == SDL_BUTTON_LEFT) {
+
+                    onClick();
+
                     int x = e.button.x;
                     int y = e.button.y;
 
@@ -73,11 +76,12 @@ bool showGameOverScreen(SDL_Renderer* renderer, int windowWidth, int windowHeigh
                     if (x >= restartButtonRect.x && x <= restartButtonRect.x + restartButtonRect.w &&
                         y >= restartButtonRect.y && y <= restartButtonRect.y + restartButtonRect.h) {
                         restart = true;
-                        quit = true;  // Exit the game over loop
+                        quit=true;
                     }
                     // Kiểm tra nếu người dùng click vào nút exit
                     if (x >= exitButtonRect.x && x <= exitButtonRect.x + exitButtonRect.w &&
                         y >= exitButtonRect.y && y <= exitButtonRect.y + exitButtonRect.h) {
+                        restart=false;
                         quit = true;  // Khi nhấn exit, thoát khỏi trò chơi
                     }
                 }

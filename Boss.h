@@ -66,16 +66,48 @@ struct Boss {
         SDL_RenderCopy(renderer, texture, &srcRect, &destRect);
     }
 
-    void drawHealthBar() {
-        SDL_Rect healthBar = { x, y - 10, w, 10 };  // Thanh máu của boss sẽ nằm trên đầu boss
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);  // Màu đỏ cho thanh máu
-        SDL_RenderFillRect(renderer, &healthBar);
+   void drawHealthBar() {
+    // Vị trí của thanh máu boss dưới thanh máu slime
+    int offsetY = 100;  // Khoảng cách từ thanh máu slime đến thanh máu boss (có thể thay đổi)
 
-        // Vẽ thanh máu còn lại
-        healthBar.w = (w * health) / maxHealth;  // Tỉ lệ phần trăm máu của boss
-        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);  // Màu xanh cho máu còn lại
-        SDL_RenderFillRect(renderer, &healthBar);
+    // Vẽ viền cho thanh máu boss
+    SDL_Rect borderRect = { 600 - 5, offsetY - 5, 200 + 10, 50 + 10 };  // Viền xung quanh thanh máu boss
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);  // Màu trắng cho viền
+    SDL_RenderFillRect(renderer, &borderRect);  // Vẽ viền ngoài
+
+    // Tính toán tỷ lệ phần trăm máu còn lại của boss
+    float healthPercentage = (float)health / maxHealth;  // Sử dụng maxHealth thay vì maxhealth
+
+    // Chọn màu sắc thanh máu boss tùy vào tỷ lệ máu còn lại
+    SDL_Color healthColor;
+    if (healthPercentage > 0.6f) {
+        healthColor = { 0, 255, 0, 255 };  // Màu xanh lá cây khi máu còn nhiều
+    } else if (healthPercentage > 0.3f) {
+        healthColor = { 255, 255, 0, 255 };  // Màu vàng khi máu còn ít
+    } else {
+        healthColor = { 255, 0, 0, 255 };  // Màu đỏ khi máu rất ít
     }
+
+    // Vẽ thanh máu boss
+    SDL_Rect healthBarRect = { 600, offsetY, (int)(200 * healthPercentage), 50 };
+    SDL_SetRenderDrawColor(renderer, healthColor.r, healthColor.g, healthColor.b, healthColor.a);  // Màu thanh máu
+    SDL_RenderFillRect(renderer, &healthBarRect);  // Vẽ thanh máu
+
+    // Vẽ số máu còn lại lên thanh máu của boss
+    std::string healthText = std::to_string(health) + " / " + std::to_string(maxHealth);  // Hiển thị số máu
+    renderText(healthText, 600 + 100, offsetY + 25);  // Hiển thị số máu ở giữa thanh máu boss
+
+    // Option: Vẽ thêm hiệu ứng nhấp nháy khi máu của boss dưới 10%
+    if (healthPercentage < 0.1f) {
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);  // Màu đỏ nhấp nháy khi máu thấp
+        SDL_RenderDrawRect(renderer, &healthBarRect);  // Vẽ viền nhấp nháy cho thanh máu
+    }
+
+    // Vẽ chữ "BOSS" trên thanh máu
+    std::string bossText = "BOSS";
+    renderText(bossText, 600 + 10, 60);  // Hiển thị chữ "BOSS" ở góc trái thanh máu
+}
+
 
     bool checkCollisionWith(const slime& slime) {
         return !(x + w <= slime.x || x >= slime.x + slime.w || y + h <= slime.y || y >= slime.y + slime.h);
