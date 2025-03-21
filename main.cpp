@@ -70,7 +70,7 @@ int main(int argc, char* argv[]) {
              numObstacle = 20;    // Số lượng chướng ngại vật trong chế độ dễ
             numEnemies = 20;     // Số lượng kẻ địch trong chế độ dễ
             numToKillForBoss = 5; // Cần giết 5 kẻ địch để boss xuất hiện
-            bossHealth = 1;     // Máu của boss trong chế độ dễ
+            bossHealth = 5;     // Máu của boss trong chế độ dễ
             numofbossbullet=1;
             speedofobs=5;
             speedofenemies=3;
@@ -172,6 +172,7 @@ int main(int argc, char* argv[]) {
                 }
                 // Kiểm tra điều kiện bắn đạn (chỉ bắn nếu thời gian trễ đã đủ)
                 if (e.key.keysym.sym == SDLK_w && SDL_GetTicks() - lastShotTime > shootDelay) {
+                  playSlimebulletMusic();
                   int x1 = slime.x + slime.w;
                   int y1 = slime.y + slime.h / 2 - 2;
                   bullets.push_back(Bullet(x1, y1));  // Tạo đạn tại vị trí slime
@@ -287,6 +288,7 @@ int main(int argc, char* argv[]) {
         if (battleWithBoss) {
             if (rand() % 100 < numofbossbullet) {  // Tỉ lệ xuất hiện đạn của boss
                 bossBullets.push_back(BossBullet(bosses[0].x, bosses[0].y + 30,speedofbossbullet));
+                playBossbulletMusic();
                 // Khi boss bắn đạn, bật chế độ hoạt hình (start shooting)
                 bosses[0].startShooting();
             }
@@ -388,6 +390,7 @@ int main(int argc, char* argv[]) {
         // Kiểm tra va chạm giữa đạn của boss và slime
         for (auto it = bossBullets.begin(); it != bossBullets.end();) {
             if (it->checkCollisionWith(slime)) {
+                playTouchMusic();
                 slime.health -= 1;  // Dino mất 1 máu khi trúng đạn của boss
                 it = bossBullets.erase(it);// Xóa đạn của boss sau khi va chạm
                 if(it==bossBullets.end()){
@@ -401,6 +404,7 @@ int main(int argc, char* argv[]) {
         // Kiểm tra va chạm giữa chướng ngại vật và slime
         for (auto it = obstacles.begin(); it != obstacles.end();) {
             if (it->checkCollisionWith(slime)) {
+                playTouchMusic();
                 slime.health -= 1;  // Dino mất 1 máu khi chạm vào chướng ngại vật
                 it = obstacles.erase(it);  // Xóa chướng ngại vật khi chạm vào Dino
                 if(it==obstacles.end()){
@@ -415,6 +419,7 @@ int main(int argc, char* argv[]) {
         // Kiểm tra va chạm giữa kẻ địch và slime
         for (auto it = enemies.begin(); it != enemies.end();) {
             if (it->checkCollisionWith(slime)) {
+                playTouchMusic();
                 slime.health -= 1;  // Dino mất 1 máu khi chạm vào kẻ địch
                 it = enemies.erase(it);  // Xóa kẻ địch khi chạm vào slime
                 if(it==enemies.end()){
@@ -496,6 +501,7 @@ for (auto it = bullets.begin(); it != bullets.end();) {
 
 
         if (isPaused) {
+                playBackgroundMusic();
                 // Hiển thị màn hình tạm dừng
                 SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
                 SDL_RenderClear(renderer);

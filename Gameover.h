@@ -65,19 +65,22 @@ bool showGameOverScreen(SDL_Renderer* renderer, int windowWidth, int windowHeigh
 
             // Handle mouse events (nút restart)
             if (e.type == SDL_MOUSEBUTTONDOWN) {
+
                 if (e.button.button == SDL_BUTTON_LEFT) {
 
-                    onClick();
 
                     int x = e.button.x;
                     int y = e.button.y;
 
                     // Check if the user clicked on the restart button
+                    onClick();
                     if (x >= restartButtonRect.x && x <= restartButtonRect.x + restartButtonRect.w &&
                         y >= restartButtonRect.y && y <= restartButtonRect.y + restartButtonRect.h) {
                         restart = true;
                         quit=true;
                     }
+
+                    onClick();
                     // Kiểm tra nếu người dùng click vào nút exit
                     if (x >= exitButtonRect.x && x <= exitButtonRect.x + exitButtonRect.w &&
                         y >= exitButtonRect.y && y <= exitButtonRect.y + exitButtonRect.h) {

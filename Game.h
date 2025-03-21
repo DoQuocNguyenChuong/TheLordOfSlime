@@ -23,6 +23,9 @@ Mix_Chunk* winSound = nullptr;
 Mix_Chunk* loseSound = nullptr;
 Mix_Music* backgroundMusic = nullptr;
 Mix_Music* menuMusic = nullptr;
+Mix_Music* touchMusic=nullptr;
+Mix_Music* slimebulletMusic=nullptr;
+Mix_Music* bossbulletMusic=nullptr;
 
 
 enum Difficulty {
@@ -147,7 +150,7 @@ bool loadMedia() {
         return false;
     }
 
-    loseSound = Mix_LoadWAV("sound\\sound_lose_sound.wav");
+    loseSound = Mix_LoadWAV("sound\\sound_lose_sound.mp3");
     if (!loseSound) {
         std::cerr << "Failed to load lose sound! SDL_mixer Error: " << Mix_GetError() << std::endl;
         return false;
@@ -165,6 +168,10 @@ bool loadMedia() {
         std::cerr << "Failed to load background music! SDL_mixer Error: " << Mix_GetError() << std::endl;
         return false;
     }
+
+    touchMusic = Mix_LoadMUS("sound\\sound_touch_sound.wav");
+    slimebulletMusic = Mix_LoadMUS("sound\\slimebullet.mp3");
+    bossbulletMusic = Mix_LoadMUS("sound\\bossbullet.mp3");
 
     return true;
 }
@@ -331,7 +338,17 @@ void playMenuMusic() {
     Mix_PlayMusic(menuMusic, -1);  // Phát nhạc nền menu
 }
 
+void playTouchMusic(){
+    Mix_PlayMusic(touchMusic,0);
+}
 
+void playSlimebulletMusic(){
+    Mix_PlayMusic(slimebulletMusic,-1);
+}
+
+void playBossbulletMusic(){
+    Mix_PlayMusic(bossbulletMusic,-1);
+}
 // Hàm giải phóng âm thanh
 void freeMedia() {
     if (clickSound) {
@@ -362,6 +379,19 @@ void freeMedia() {
     if (backgroundMusic) {
         Mix_FreeMusic(backgroundMusic);
         backgroundMusic = nullptr;
+    }
+
+    if(touchMusic){
+        Mix_FreeMusic(touchMusic);
+        touchMusic=nullptr;
+    }
+    if(slimebulletMusic){
+        Mix_FreeMusic(slimebulletMusic);
+        slimebulletMusic=nullptr;
+    }
+    if(bossbulletMusic){
+        Mix_FreeMusic(bossbulletMusic);
+        bossbulletMusic=nullptr;
     }
 
     Mix_Quit();
