@@ -44,10 +44,15 @@
  - Sự khác biệt:
     Mặc dù có sự tham khảo từ dino in zunggle nhưng logic game đã có sự thay đổi khá nhiều ví dụ:
      +) Ở Dino thì game sẽ chạy vô hạn và tính điểm còn ở game Slime thì lại có kết thúc khi boss bị đánh bại hoặc slime hết máu hoặc hết thời gian
+   
      +) Ở game Slime này còn có 3 chế độ chơi để người chơi có thể chọn thoải mái(easy,medium,hard)
+   
      +) Ở game Slime còn có bộ nút pause game khi người chơi ấn "p" và bộ nút gameover khi người chơi kết thúc ván đấu, cả 2 bộ nút đều có 2 nút là "restart" và "exit" với
     "restart" có chức năng quay lại menu để chọn bàn chơi và "exit" để thoát khỏi trò chơi
+   
      +) Sự tham khảo của game Slime với game Dino chỉ dừng lại ở ý tưởng để back ground chạy liên tục, các logic game, dòng code và cách chia file gần như khác hoàn toàn
+   
      +) Các nhân vật và đạn của nhân vật đều là sản phẩm do chính tay em tự vẽ, chỉ có background và âm thanh là tham khảo từ các nguồn trên mạng
+   
  - Điểm mong muốn:
     Từ các điểm đặc biệt em đã nêu ở phần khác biệt, em tin rằng game của em có thể đạt được mức điểm tối đa (điểm 10)
