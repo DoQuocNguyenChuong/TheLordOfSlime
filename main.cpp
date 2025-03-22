@@ -70,14 +70,14 @@ int main(int argc, char* argv[]) {
              numObstacle = 20;    // Số lượng chướng ngại vật trong chế độ dễ
             numEnemies = 20;     // Số lượng kẻ địch trong chế độ dễ
             numToKillForBoss = 5; // Cần giết 5 kẻ địch để boss xuất hiện
-            bossHealth = 5;     // Máu của boss trong chế độ dễ
+            bossHealth = 50;     // Máu của boss trong chế độ dễ
             numofbossbullet=1;
             speedofobs=5;
             speedofenemies=3;
             speedofbossbullet=-5;
             speedofboss=1;
             slimehealth=10;
-            timeLimit=30*1000;
+            timeLimit=2*60*1000;
 
             break;
         case MEDIUM:
@@ -288,9 +288,9 @@ int main(int argc, char* argv[]) {
         if (battleWithBoss) {
             if (rand() % 100 < numofbossbullet) {  // Tỉ lệ xuất hiện đạn của boss
                 bossBullets.push_back(BossBullet(bosses[0].x, bosses[0].y + 30,speedofbossbullet));
-                playBossbulletMusic();
                 // Khi boss bắn đạn, bật chế độ hoạt hình (start shooting)
                 bosses[0].startShooting();
+                 playBossbulletMusic();
             }
             for (auto it = bossBullets.begin(); it != bossBullets.end(); ) {
                it->move();  // Move the bullet
@@ -537,12 +537,10 @@ for (auto it = bullets.begin(); it != bullets.end();) {
         if (restartGame ) {
             startTime = SDL_GetTicks();
             quit=false;
-            continue;
         } else {
             quit = true;  // Exit the game and go back to the menu
         }
     }
-
     freeMedia();
     close();
     return 0;

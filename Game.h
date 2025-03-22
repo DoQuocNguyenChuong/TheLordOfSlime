@@ -343,11 +343,11 @@ void playTouchMusic(){
 }
 
 void playSlimebulletMusic(){
-    Mix_PlayMusic(slimebulletMusic,-1);
+    Mix_PlayMusic(slimebulletMusic,0);
 }
 
 void playBossbulletMusic(){
-    Mix_PlayMusic(bossbulletMusic,-1);
+    Mix_PlayMusic(bossbulletMusic,0);
 }
 // Hàm giải phóng âm thanh
 void freeMedia() {
