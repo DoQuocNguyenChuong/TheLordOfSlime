@@ -5,16 +5,23 @@
 + Tên: Đỗ Quốc Nguyên Chương
 + Mã sinh viên: 24020050
 - Game thực hiện: The lord of Slime:
-  + Đây là tựa game lấy cảm hứng từ bộ anime "chuyển sinh thành slime". 
+  + Đây là tựa game lấy cảm hứng từ bộ anime "chuyển sinh thành slime".
+  
    // Nguồn: https://vi.wikipedia.org/wiki/V%E1%BB%81_chuy%E1%BB%87n_t%C3%B4i_chuy%E1%BB%83n_sinh_th%C3%A0nh_Slime
+  
   + Logic game có sự tham khảo từ Dino in zungle và có sự hỗ trợ của chatGPT
+    
    // Nguồn: https://github.com/thai-nm/dino-in-zungle
+  
   + Mức độ sử dụng AI: +) Có sử dụng chatGPt trong việc chỉnh và hoàn thiện logic code
                        +) có sử dụng AI để giải thích công dụng của các câu lệnh trong SDL2 image và mixer
+    
   + Âm thanh có lấy từ Dino in zungle và từ các trang web trên mạng
+  
    // Nguồn: +) https://github.com/thai-nm/dino-in-zungle
              +) https://pixabay.com/vi/sound-effects/search/chi%E1%BA%BFn%20th%E1%BA%AFng/
              +) https://tiengdong.com/
+  
   + Ảnh: +) Các nhân vật và đạn: tự vẽ
          +) Background: lấy từ trên mạng
               // Nguồn: https://www.remove.bg/t/change-background
