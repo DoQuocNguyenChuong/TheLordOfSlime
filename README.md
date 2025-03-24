@@ -23,6 +23,7 @@
              +) https://tiengdong.com/
   
   + Ảnh: +) Các nhân vật và đạn: tự vẽ
+              // Nguồn: https://www.pixilart.com/draw
          +) Background: lấy từ trên mạng
               // Nguồn: https://www.remove.bg/t/change-background
 
