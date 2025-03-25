@@ -17,7 +17,7 @@ struct BossBullet {
     SDL_Texture* texture;  // Texture cho viên đạn
 
     BossBullet(int startX, int startY,int speed)
-        : x(startX), y(startY), w(50), h(40), speed(speed) {
+        : x(startX), y(startY), w(50), h(40), speed(speed ) {
 
         // Tải hình ảnh cho viên đạn
         texture = IMG_LoadTexture(renderer, "img\\bullet\\bossbullet.png");  // Đường dẫn tới hình ảnh của viên đạn

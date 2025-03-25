@@ -27,24 +27,18 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-
-     bool quit = false;
+    bool quit = false;
     SDL_Event e;
-    // Khởi tạo biến thời gian
-    uint32_t startTime = SDL_GetTicks();  // Lấy thời gian bắt đầu game
-    uint32_t elapsedTime = 0;  // Biến lưu trữ thời gian đã trôi qua
-    uint32_t timeLimit = 0;  // Thời gian giới hạn (5 phút = 300000 ms)
 
     while (!quit) {
-
     // Hiển thị menu và chọn độ khó
     Difficulty difficulty = showMenu(renderer, windowWidth, windowHeight);
 
 
     bool gameover=false;
     bool restartGame=false;
-    bool isPaused = false;  // Trạng thái tạm dừng
     int backgroundX = 0; // Vị trí cuộn của nền
+
     const int backgroundSpeed = 3; // Tốc độ cuộn nền
 
     std::vector<Obstacle> obstacles;
@@ -126,14 +120,22 @@ int main(int argc, char* argv[]) {
 
     Uint32 lastShotTime = 0;  // Biến lưu trữ thời gian bắn lần trước
     const Uint32 shootDelay = 300;  // Thời gian trễ giữa các lần bắn (300 ms)
-
-     playBackgroundMusic();
-
+    playBackgroundMusic();
     // Vòng lặp game chính
     while (!gameover && !quit) {
-    if (isPaused) {
+
+
+            // Chỉ bắt đầu tính thời gian khi game được bắt đầu và không tạm dừng
+        if (startTime == 0 && isPaused==false){
+            startTime = SDL_GetTicks();  // Cập nhật thời gian bắt đầu game khi bắt đầu
+        }
+
+        if (isPaused==true){
             pauseGame(renderer, font, windowWidth, windowHeight, isPaused, restartGame);
-            if(restartGame==true) slime.health=0;
+            if(restartGame==true){
+                startTime=0;
+                slime.health=0;
+            }
         }
 
         while (SDL_PollEvent(&e) != 0) {
@@ -150,7 +152,6 @@ int main(int argc, char* argv[]) {
                 if (e.key.keysym.sym == SDLK_p) {
                         isPaused = !isPaused;  // Đảo ngược trạng thái tạm dừng khi nhấn phím P
                     }
-
 
                 if (!isPaused) {
                 if (e.key.keysym.sym == SDLK_UP){
@@ -194,7 +195,6 @@ int main(int argc, char* argv[]) {
         }
 
 
-
         backgroundX -= backgroundSpeed;
 
         // Nếu nền đã ra khỏi màn hình, đưa nó về vị trí ban đầu
@@ -218,24 +218,24 @@ int main(int argc, char* argv[]) {
         SDL_Rect backgroundRect2 = {backgroundX + windowWidth, 0, windowWidth, windowHeight};  // Vị trí nền tiếp theo
         SDL_RenderCopy(renderer, backgroundTexture, NULL, &backgroundRect2);
 
+         if (isPaused==false) {
+         // Khi không tạm dừng, tính toán lại elapsedTime
+        elapsedTime = SDL_GetTicks() - startTime;  // Trừ đi thời gian đã tạm dừng
 
-        // Cập nhật thời gian đã trôi qua
-            elapsedTime = SDL_GetTicks() - startTime;  // Tính thời gian trôi qua kể từ khi game bắt đầu
+         // Tính thời gian còn lại
+        uint32_t remainingTime = timeLimit - elapsedTime;
+        uint32_t secondsRemaining = remainingTime / 1000;  // Thời gian còn lại (giây)
+
+         // Hiển thị thời gian đếm ngược
+         std::string timeText = "Time limited: " + std::to_string(secondsRemaining) + "  s";  // Thời gian còn lại
+         renderText(timeText, 200, 0);  // Hiển thị thời gian ở góc trên bên trái
+}
             // Kiểm tra nếu hết thời gian giới hạn
             if (elapsedTime >= timeLimit) {
                 slime.health=0;
                 onLose();
                 gameover = true;  // Kết thúc game nếu hết thời gian
             }
-
-
-            // Tính thời gian còn lại
-            uint32_t remainingTime = timeLimit - elapsedTime;
-            uint32_t secondsRemaining = remainingTime / 1000;  // Thời gian còn lại (giây)
-
-            // Hiển thị thời gian đếm ngược
-            std::string timeText = "Time limited: " + std::to_string(secondsRemaining) + "  s";  // Thời gian còn lại
-            renderText(timeText, 200, 0);  // Hiển thị thời gian ở góc trên bên trái
 
 
 
@@ -535,7 +535,7 @@ for (auto it = bullets.begin(); it != bullets.end();) {
        restartGame = showGameOverScreen(renderer, windowWidth, windowHeight, slime.health > 0);
 
         if (restartGame ) {
-            startTime = SDL_GetTicks();
+            startTime = 0;
             quit=false;
         } else {
             quit = true;  // Exit the game and go back to the menu

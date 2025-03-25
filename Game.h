@@ -26,7 +26,13 @@ Mix_Music* menuMusic = nullptr;
 Mix_Music* touchMusic=nullptr;
 Mix_Music* slimebulletMusic=nullptr;
 Mix_Music* bossbulletMusic=nullptr;
+// Khởi tạo biến thời gian
+    uint32_t startTime = 0;  // Lấy thời gian bắt đầu game
+    uint32_t elapsedTime = 0;  // Biến lưu trữ thời gian đã trôi qua
+    uint32_t timeLimit = 0;  // Thời gian giới hạn
 
+// biến toàn cục cho việc tạm dừng game
+bool isPaused = false;// Trạng thái của trò chơi (Pause hoặc chơi bình thường)
 
 enum Difficulty {
     EASY,
@@ -34,9 +40,6 @@ enum Difficulty {
     HARD
 };
 
-// Trạng thái của trò chơi (Pause hoặc chơi bình thường)
-bool isPaused = false;
-bool isGameRunning = true; // Để kiểm soát trạng thái game khi dừng hoặc tiếp tục
 int selectedDifficulty = EASY; // Ví dụ bạn đã có một cách để chọn difficulty
 
 // ham khoi tao sdl
