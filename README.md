@@ -56,6 +56,10 @@
 (*)Sự khác biệt và điểm mong muốn:
  - Sự khác biệt:
     Mặc dù có sự tham khảo từ dino in zunggle nhưng logic game đã có sự thay đổi khá nhiều ví dụ:
+     +)Ở game này có thể di chuyển trái, phải, lên, xuống linh động theo ý muốn của người chơi
+   
+     +)thêm tính năng bắn đạn cho boss và cho slime, ấn "w" để bắn đạn
+   
      +) Ở Dino thì game sẽ chạy vô hạn và tính điểm còn ở game Slime thì lại có kết thúc khi boss bị đánh bại hoặc slime hết máu hoặc hết thời gian
    
      +) Ở game Slime này còn có 3 chế độ chơi để người chơi có thể chọn thoải mái(easy,medium,hard)
