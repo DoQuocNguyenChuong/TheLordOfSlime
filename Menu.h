@@ -12,7 +12,6 @@ Difficulty showMenu(SDL_Renderer* renderer, int windowWidth, int windowHeight) {
     bool quit = false;
     bool showDifficulty = false;  // Biến để điều khiển việc hiển thị các nút chế độ chơi
     Difficulty selectedDifficulty = EASY; // Mặc định là mức độ trung bình
-    bool gameplayClicked = false;  // Biến kiểm tra trạng thái nút Gameplay đã được nhấn
 
     // Load font cho tên game và các nút
     TTF_Font* titleFont = TTF_OpenFont("VNI-Nhatban.ttf", 50);  // Đường dẫn đến font của bạn
@@ -24,7 +23,7 @@ Difficulty showMenu(SDL_Renderer* renderer, int windowWidth, int windowHeight) {
     TTF_Font* font = TTF_OpenFont("VNI-Nhatban.ttf", 30);  // Đường dẫn đến font của bạn
 
     // Tạo texture cho tên game
-    SDL_Surface* titleSurface = TTF_RenderText_Solid(titleFont, "The lord of Slime ", {70, 130, 180});
+    SDL_Surface* titleSurface = TTF_RenderText_Solid(titleFont, "The lord of Slime ", {0, 0, 0});
     SDL_Texture* titleTexture = SDL_CreateTextureFromSurface(renderer, titleSurface);
     SDL_FreeSurface(titleSurface);
 
@@ -62,12 +61,12 @@ Difficulty showMenu(SDL_Renderer* renderer, int windowWidth, int windowHeight) {
 
     // Đặt vị trí cho tiêu đề và các nút độ khó
     SDL_Rect titleRect = {windowWidth / 2 - titleWidth / 2, windowHeight / 4 - titleHeight / 2, titleWidth, titleHeight};
-    SDL_Rect gameplayButtonRect = {windowWidth / 2 - gameplayButtonWidth / 2, windowHeight / 2 - gameplayButtonHeight / 2 + 80, gameplayButtonWidth, gameplayButtonHeight};
+    SDL_Rect gameplayButtonRect = {windowWidth / 2 - gameplayButtonWidth / 2, windowHeight / 2 - gameplayButtonHeight / 2 , gameplayButtonWidth, gameplayButtonHeight};
     SDL_Rect easyButtonRect = {windowWidth / 2 - easyTextWidth / 2, windowHeight / 2 - easyTextHeight / 2 - 50, easyTextWidth, easyTextHeight};
     SDL_Rect mediumButtonRect = {windowWidth / 2 - mediumTextWidth / 2, windowHeight / 2 - mediumTextHeight / 2 + 50, mediumTextWidth, mediumTextHeight};
     SDL_Rect hardButtonRect = {windowWidth / 2 - hardTextWidth / 2, windowHeight / 2 - hardTextHeight / 2 + 150, hardTextWidth, hardTextHeight};
 
-    bool isGameplayHovered = false;
+   // bool isGameplayHovered = false;
     bool isEasyHovered = false;
     bool isMediumHovered = false;
     bool isHardHovered = false;
@@ -85,10 +84,6 @@ Difficulty showMenu(SDL_Renderer* renderer, int windowWidth, int windowHeight) {
             if (e.type == SDL_MOUSEMOTION) {
                 int x = e.motion.x;
                 int y = e.motion.y;
-
-                // Check if the mouse is hovering over any button
-                isGameplayHovered = x >= gameplayButtonRect.x && x <= gameplayButtonRect.x + gameplayButtonRect.w &&
-                                    y >= gameplayButtonRect.y && y <= gameplayButtonRect.y + gameplayButtonRect.h;
 
                 if (showDifficulty) {
                     isEasyHovered = x >= easyButtonRect.x && x <= easyButtonRect.x + easyButtonRect.w &&
@@ -108,14 +103,13 @@ Difficulty showMenu(SDL_Renderer* renderer, int windowWidth, int windowHeight) {
                     // Nếu nhấn vào nút "Gameplay", hiển thị các chế độ
                     if (x >= gameplayButtonRect.x && x <= gameplayButtonRect.x + gameplayButtonRect.w &&
                         y >= gameplayButtonRect.y && y <= gameplayButtonRect.y + gameplayButtonRect.h) {
-                        gameplayClicked = true;
                         // Khi nhấn vào nút Gameplay, thu nhỏ nút đó
                         gameplayButtonWidth = 50;  // Giảm kích thước nút gameplay
                         gameplayButtonHeight = 50; // Giảm kích thước nút gameplay
                         showDifficulty = true; // Hiển thị chế độ chơi
                     }
 
-                    // Kiểm tra nếu nhấn vào một chế độ khó
+                    // Kiểm tra nếu nhấn vào một chế độ
                     if (showDifficulty) {
                         if (x >= easyButtonRect.x && x <= easyButtonRect.x + easyButtonRect.w &&
                             y >= easyButtonRect.y && y <= easyButtonRect.y + easyButtonRect.h) {

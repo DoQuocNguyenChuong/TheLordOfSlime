@@ -30,6 +30,8 @@ Mix_Music* bossbulletMusic=nullptr;
     uint32_t startTime = 0;  // Lấy thời gian bắt đầu game
     uint32_t elapsedTime = 0;  // Biến lưu trữ thời gian đã trôi qua
     uint32_t timeLimit = 0;  // Thời gian giới hạn
+    uint32_t pauseStartTime = 0;  // Thời gian bắt đầu pause
+    uint32_t totalPauseTime = 0;  // Tổng thời gian đã pause
 
 // biến toàn cục cho việc tạm dừng game
 bool isPaused = false;// Trạng thái của trò chơi (Pause hoặc chơi bình thường)

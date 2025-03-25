@@ -130,13 +130,29 @@ int main(int argc, char* argv[]) {
             startTime = SDL_GetTicks();  // Cập nhật thời gian bắt đầu game khi bắt đầu
         }
 
-        if (isPaused==true){
-            pauseGame(renderer, font, windowWidth, windowHeight, isPaused, restartGame);
-            if(restartGame==true){
-                startTime=0;
-                slime.health=0;
-            }
+        if (isPaused) {
+        // Nếu game bị pause, ghi lại thời gian bắt đầu pause
+        if (pauseStartTime == 0) {
+            pauseStartTime = SDL_GetTicks();  // Lưu lại thời gian khi game bị pause
         }
+
+        // Hiển thị màn hình pause
+        pauseGame(renderer, font, windowWidth, windowHeight, isPaused, restartGame);
+
+        if (restartGame) {
+            // Nếu người chơi chọn restart, reset thời gian
+            startTime = 0;
+            totalPauseTime = 0;
+            slime.health = 0;  // Reset slime health
+        }
+    } else {
+        // Nếu game không pause, tính toán thời gian đã trôi qua
+        if (pauseStartTime > 0) {
+            totalPauseTime += SDL_GetTicks() - pauseStartTime;  // Cộng thêm thời gian pause vào tổng thời gian pause
+            pauseStartTime = 0;  // Reset thời gian pause
+        }
+    }
+
 
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT) {
@@ -219,8 +235,8 @@ int main(int argc, char* argv[]) {
         SDL_RenderCopy(renderer, backgroundTexture, NULL, &backgroundRect2);
 
          if (isPaused==false) {
-         // Khi không tạm dừng, tính toán lại elapsedTime
-        elapsedTime = SDL_GetTicks() - startTime;  // Trừ đi thời gian đã tạm dừng
+        // Tính toán elapsedTime, trừ đi tổng thời gian pause
+    elapsedTime = SDL_GetTicks() - startTime - totalPauseTime;  // Trừ đi thời gian pause
 
          // Tính thời gian còn lại
         uint32_t remainingTime = timeLimit - elapsedTime;

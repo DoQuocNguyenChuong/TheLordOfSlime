@@ -4,37 +4,12 @@
 	<ActiveTarget name="Debug" />
 	<File name="Gameover.h" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="4729" topLine="0" />
+			<Cursor1 position="4729" topLine="30" />
 		</Cursor>
 	</File>
-	<File name="Slime.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
+	<File name="Boss.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3791" topLine="124" />
-		</Cursor>
-	</File>
-	<File name="main.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-4" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="19726" topLine="262" />
-		</Cursor>
-	</File>
-	<File name="Bullet.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="477" topLine="17" />
-		</Cursor>
-	</File>
-	<File name="Menu.h" open="1" top="1" tabpos="8" split="0" active="1" splitpos="0" zoom_1="-4" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="9122" topLine="144" />
-		</Cursor>
-	</File>
-	<File name="Obstacle.h" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="770" topLine="21" />
-		</Cursor>
-	</File>
-	<File name="Game.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="9377" topLine="241" />
+			<Cursor1 position="1164" topLine="36" />
 		</Cursor>
 	</File>
 	<File name="Enemy.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-4" zoom_2="0">
@@ -42,9 +17,34 @@
 			<Cursor1 position="793" topLine="16" />
 		</Cursor>
 	</File>
-	<File name="Boss.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Bullet.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1164" topLine="3" />
+			<Cursor1 position="477" topLine="44" />
+		</Cursor>
+	</File>
+	<File name="Slime.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3791" topLine="124" />
+		</Cursor>
+	</File>
+	<File name="main.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-4" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="8178" topLine="211" />
+		</Cursor>
+	</File>
+	<File name="Menu.h" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="-4" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1093" topLine="12" />
+		</Cursor>
+	</File>
+	<File name="Game.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1112" topLine="15" />
+		</Cursor>
+	</File>
+	<File name="Obstacle.h" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="770" topLine="21" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>
