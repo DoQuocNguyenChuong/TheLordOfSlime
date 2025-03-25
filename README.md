@@ -45,9 +45,13 @@
   + Đây là phiên bản có sự đầy đủ nhất (có thêm âm thanh khi chọn ở menu, khi nhảy, khi vào màn chơi, khi bấm chuột)
   + Phiên bản này còn có sự cải tiến các nút bấm khi ở màn menu và gameover
   + Ở phiên bản này còn có thêm tính năng pause khi người chơi nhấn phím "P"
-- Ngày 21/03/2025: version 2.67
+- Ngày 21/03/2025: version 2.67.01
   + Phiên bản này có sự thêm và chỉnh sửa về âm thanh của đạn, va chạm với slime và game lose
-- Ngày 25/03/2025menu
+- Ngày 25/03/2025: version 2.67.02
+  + Phiên bản này có sự sửa lỗi thời gian chọn màn chơi
+  + Có sự thêm nút gameplay trước khi chọn màn
+- Ngày 25/03/2025: version 2.67.03
+  + Phiên bản này đã sửa được lỗi khi pause game mà thời gian vẫn chạychạy
  
 (*)Sự khác biệt và điểm mong muốn:
  - Sự khác biệt:
